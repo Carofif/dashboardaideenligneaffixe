@@ -19,15 +19,15 @@
       <div class="navbar-end">
         <nav-bar-menu class="has-divider">
           <b-icon icon="menu" custom-size="default"/>
-          <span>Sample Menu</span>
+          <span>Menu</span>
           <div slot="dropdown" class="navbar-dropdown">
             <router-link to="/profile" class="navbar-item" exact-active-class="is-active">
               <b-icon icon="account" custom-size="default"/>
-              <span>My Profile</span>
+              <span>Mon Profile</span>
             </router-link>
             <a class="navbar-item">
               <b-icon icon="settings" custom-size="default"/>
-              <span>Settings</span>
+              <span>Paramètres</span>
             </a>
             <a class="navbar-item">
               <b-icon icon="email" custom-size="default"/>
@@ -36,7 +36,7 @@
             <hr class="navbar-divider">
             <a class="navbar-item">
               <b-icon icon="logout" custom-size="default"/>
-              <span>Log Out</span>
+              <span>Déconnexion</span>
             </a>
           </div>
         </nav-bar-menu>
@@ -49,11 +49,11 @@
           <div slot="dropdown" class="navbar-dropdown">
             <a class="navbar-item">
               <b-icon icon="account" custom-size="default"></b-icon>
-              <span>My Profile</span>
+              <span>Mon Profile</span>
             </a>
             <a class="navbar-item">
               <b-icon icon="settings" custom-size="default"></b-icon>
-              <span>Settings</span>
+              <span>Paramètres</span>
             </a>
             <a class="navbar-item">
               <b-icon icon="email" custom-size="default"></b-icon>
@@ -62,17 +62,17 @@
             <hr class="navbar-divider">
             <a class="navbar-item">
               <b-icon icon="logout" custom-size="default"></b-icon>
-              <span>Log Out</span>
+              <span>Déconnexion</span>
             </a>
           </div>
         </nav-bar-menu>
-        <a href="https://justboil.me/bulma-admin-template/one" class="navbar-item has-divider is-desktop-icon-only" title="About">
+        <a href="https://justboil.me/bulma-admin-template/one" class="navbar-item has-divider is-desktop-icon-only" title="A propos">
           <b-icon icon="help-circle-outline" custom-size="default"/>
-          <span>About</span>
+          <span>A propos</span>
         </a>
-        <a class="navbar-item is-desktop-icon-only" title="Log out" @click="logout">
+        <a class="navbar-item is-desktop-icon-only" title="Déconnexion" @click="deconnexion">
           <b-icon icon="logout" custom-size="default"/>
-          <span>Log out</span>
+          <span>Déconnexion</span>
         </a>
       </div>
     </div>
@@ -115,9 +115,9 @@ export default {
     menuNavBarToggle () {
       this.isMenuNavBarActive = (!this.isMenuNavBarActive)
     },
-    logout () {
+    deconnexion () {
       this.$buefy.snackbar.open({
-        message: 'Log out clicked',
+        message: 'Déconnexion cliqué',
         queue: false
       })
     }

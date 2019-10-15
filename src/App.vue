@@ -28,7 +28,7 @@ export default {
           {
             to: '/',
             icon: 'desktop-mac',
-            label: 'Dashboard'
+            label: 'Tableau de bord'
           }
         ],
         'Examples',
@@ -48,6 +48,11 @@ export default {
             to: '/profile',
             label: 'Profile',
             icon: 'account-circle'
+          },
+          {
+            to: '/tablecategorie',
+            label: 'Catégories',
+            icon: 'shape-outline'
           },
           {
             label: 'Submenus',

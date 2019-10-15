@@ -1,7 +1,7 @@
 <template>
   <b-field class="file">
     <b-upload v-model="file" @input="upload" :accept="accept">
-      <a class="button is-primary">
+      <a class="button is-info">
         <b-icon icon="upload" custom-size="default"></b-icon>
         <span>{{ buttonLabel }}</span>
       </a>
@@ -27,7 +27,7 @@ export default {
   },
   computed: {
     buttonLabel () {
-      return !this.file ? 'Pick a file' : 'Pick another file'
+      return !this.file ? 'Choisir un fichier' : 'Choisir un autre fichier'
     }
   },
   methods: {

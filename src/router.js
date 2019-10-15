@@ -40,6 +40,16 @@ export default new Router({
       name: 'client.edit',
       component: () => import(/* webpackChunkName: "client-form" */ './views/ClientForm.vue'),
       props: true
+    },
+    {
+      path: '/ajoutcategorie',
+      name: 'ajoutcategorie',
+      component: () => import(/* webpackChunkName: "ajoutcategorie" */ './components/Catégories/AjoutCategorie.vue')
+    },
+    {
+      path: '/tablecategorie',
+      name: 'tablecategorie',
+      component: () => import(/* webpackChunkName: "tablecategorie" */ './components/Catégories/TablesCategories.vue')
     }
   ],
   scrollBehavior (to, from, savedPosition) {
