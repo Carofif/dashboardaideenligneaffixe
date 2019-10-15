@@ -145,7 +145,7 @@ export default {
         if (snap.val()) {
           this.categories = Object.values(snap.val())
         } else {
-            this.categories = []
+          this.categories = []
         }
       })
     },
@@ -169,7 +169,7 @@ export default {
     }
   },
   mounted () {
-      this.getCategories()
+    this.getCategories()
   },
   destroyed () {
     db.ref('categories/').off()

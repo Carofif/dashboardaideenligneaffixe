@@ -2,7 +2,6 @@
     <div>
       <a  @click="isComponentModalActive = true"><b-icon icon="plus-circle-outline" size="is-large"></b-icon></a>
         <b-modal :active.sync="isComponentModalActive" has-modal-card trap-focus>
-             
               <div class="modal-card">
                   <header class="modal-card-head">
                       <p class="modal-card-title">Création d'une catégorie</p>
@@ -39,7 +38,7 @@ export default {
     return {
       isComponentModalActive: false,
       image: null,
-      newCategorie: ""
+      newCategorie: ''
     }
   }
 }
