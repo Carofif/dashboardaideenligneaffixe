@@ -13,14 +13,6 @@ export default new Router({
       component: Home
     },
     {
-      path: '/tables',
-      name: 'tables',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "tables" */ './views/Tables.vue')
-    },
-    {
       path: '/forms',
       name: 'forms',
       component: () => import(/* webpackChunkName: "forms" */ './views/Forms.vue')
@@ -31,20 +23,9 @@ export default new Router({
       component: () => import(/* webpackChunkName: "profile" */ './views/Profile.vue')
     },
     {
-      path: '/client/new',
-      name: 'client.new',
-      component: () => import(/* webpackChunkName: "client-form" */ './views/ClientForm.vue')
-    },
-    {
-      path: '/client/:id',
-      name: 'client.edit',
-      component: () => import(/* webpackChunkName: "client-form" */ './views/ClientForm.vue'),
-      props: true
-    },
-    {
-      path: '/ajoutcategorie',
-      name: 'ajoutcategorie',
-      component: () => import(/* webpackChunkName: "ajoutcategorie" */ './components/Catégories/AjoutCategorie.vue')
+      path: '/tablearticle',
+      name: 'tablearticle',
+      component: () => import(/* webpackChunkName: "tablearticle" */ './components/Articles/TableArticle.vue')
     },
     {
       path: '/tablecategorie',
