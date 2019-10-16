@@ -33,16 +33,7 @@
 
 <script>
 export default {
-  props: {
-    isActive: {
-      type: Boolean,
-      default: false
-    },
-    valModif: {
-      type: Object,
-      default: {}
-    }
-  },
+  props: ['isActive', 'valModif'],
   data () {
     return {
       isComponentModalActive: false,

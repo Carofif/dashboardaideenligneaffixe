@@ -34,12 +34,6 @@ export default {
         'Examples',
         [
           {
-            to: '/tables',
-            label: 'Tables',
-            icon: 'table',
-            updateMark: true
-          },
-          {
             to: '/forms',
             label: 'Forms',
             icon: 'square-edit-outline'
@@ -55,19 +49,9 @@ export default {
             icon: 'shape-outline'
           },
           {
-            label: 'Submenus',
-            subLabel: 'Submenus Example',
-            icon: 'view-list',
-            menu: [
-              {
-                href: '#void',
-                label: 'Sub-item One'
-              },
-              {
-                href: '#void',
-                label: 'Sub-item Two'
-              }
-            ]
+            to: '/tablearticle',
+            label: 'Articles',
+            icon: 'newspaper-variant-multiple-outline'
           }
         ],
         'About',

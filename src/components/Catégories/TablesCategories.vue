@@ -2,7 +2,7 @@
   <div>
     <title-bar :title-stack="titleStack"/>
     <hero-bar>
-      Tables
+      Table Catégorie
       <router-link slot="right" to="/" class="button">
         Tableau de bord
       </router-link>
@@ -89,13 +89,12 @@
 <script>
 import TitleBar from '@/components/TitleBar'
 import HeroBar from '@/components/HeroBar'
-import axios from 'axios'
 import ModalBox from '@/components/ModalBox'
 import { db } from '@/plugins/firebase'
 import AjoutCategorie from '@/components/Catégories/AjoutCategorie'
 import ModifierCategorie from '@/components/Catégories/ModifierCategorie'
 export default {
-  name: 'Tables',
+  name: 'Table Catégorie',
   components: { HeroBar, TitleBar, ModalBox, AjoutCategorie, ModifierCategorie },
   props: {
     checkable: {
@@ -106,7 +105,7 @@ export default {
   data () {
     return {
       isComponentModalActive: false,
-      trashObjectModif: null,      
+      trashObjectModif: null,
       isModalActive: false,
       trashObject: null,
       categories: [],
@@ -121,7 +120,7 @@ export default {
     titleStack () {
       return [
         'Admin',
-        'Tables'
+        'Table Catégorie'
       ]
     },
     trashObjectName () {
@@ -145,7 +144,7 @@ export default {
         if (snap.val()) {
           this.categories = Object.values(snap.val())
         } else {
-            this.categories = []
+          this.categories = []
         }
       })
     },
@@ -169,7 +168,7 @@ export default {
     }
   },
   mounted () {
-      this.getCategories()
+    this.getCategories()
   },
   destroyed () {
     db.ref('categories/').off()
