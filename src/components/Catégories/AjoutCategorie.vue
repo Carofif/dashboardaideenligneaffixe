@@ -8,7 +8,7 @@
                    </header>
                   <section class="modal-card-body">
                     <b-field class="file">
-                      <b-upload v-model="image">
+                      <b-upload v-model="image" @input="saveImageUrl">
                         <a class="button is-info">
                           <b-icon icon="upload"></b-icon>
                           <span>Cliquer pour ajouter l'image de la catégorie</span>
@@ -33,13 +33,46 @@
 </template>
 
 <script>
+import { db } from '@/plugins/firebase'
 export default {
   data () {
     return {
       isComponentModalActive: false,
       image: null,
-      newCategorie: ''
+      newCategorie: '',
+      categorieImageUrl: null
     }
-  }
+  },
+   methods: {
+      //Cette fonction permet de recupere l'url de l'image ajoute
+   //et de la sauvegarder dans une variable
+   saveImageUrl (e) {
+     const imge = e;
+     const reader = new FileReader();
+     reader.readAsDataURL(imge);
+     reader.onload = e =>{
+       this.categorieImageUrl = e.target.result;
+     };},
+   //fonction permettant d'ajoute une categorie sur firebase
+    addCategorie () {
+      if(this.newCategorie.length){
+        const id = db.ref('categories').push({categorie: this.newCategorie, image: this.categorieImageUrl}).key
+        dataRef.child(id).update({id: id})
+        this.newCategorie = ''
+        this.$buefy.toast.open({
+          message: 'Categorie enregistre',
+          type: 'is-success',
+          position: 'is-bottom'
+        })
+      } else {
+        this.$buefy.toast.open({
+          message: 'Champ vide',
+          type: 'is-danger',
+          position: 'is-bottom'
+        })
+      }
+    
+   }
+ }
 }
 </script>
