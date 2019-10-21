@@ -5,11 +5,11 @@
         <p class="modal-card-title">Confirmer l'action</p>
       </header>
       <section class="modal-card-body">
-        <p>Cela supprimera définitivement<b>{{ trashObjectName }}</b></p>
+        <p>Cela supprimera définitivement <b>{{ trashObjectName.libelle }}</b></p>
         <p>L'action ne peut pas être annulée.</p>
       </section>
       <footer class="modal-card-foot">
-        <button class="button" type="button" @click="annuler">Annuler</button>
+        <button class="button" type="button" @click="annuler">Fermer</button>
         <button class="button is-danger" @click="confirmer">Supprimer</button>
       </footer>
     </div>
@@ -17,6 +17,9 @@
 </template>
 
 <script>
+
+import { db } from '@/plugins/firebase'
+
 export default {
   name: 'ModalBox',
   props: {
@@ -25,8 +28,8 @@ export default {
       default: false
     },
     trashObjectName: {
-      type: String,
-      default: null
+      type: Object,
+      default: {}
     }
   },
   data () {
@@ -39,7 +42,19 @@ export default {
       this.$emit('annuler')
     },
     confirmer () {
-      this.$emit('confirmer')
+         if(this.trashObjectName.libelle )
+       {
+           db.ref('categories').child(this.trashObjectName.id).remove() ;   
+
+             this.$buefy.toast.open({
+            message: 'Modification de Categorie confirmée',
+            type: 'is-success',
+            position: 'is-bottom'
+
+           });
+           
+       }
+      this.$emit('confirm')
     }
   },
   watch: {
@@ -50,6 +65,10 @@ export default {
       if (!newValue) {
         this.annuler()
       }
+    },
+    trashObjectName (newValue) {
+      this.trashObjectName = newValue
+      
     }
   }
 }

@@ -28,7 +28,8 @@
                  <div>
             <modal-box :is-active="isModalActive" :trash-object-name="trashObjectName" @confirm="trashConfirm"
                     @cancel="trashCancel"/>
-            <modifier-categorie :is-active="isComponentModalActive" :val-modif="valModification"/>
+            <modifier-categorie :is-active="isComponentModalActive" :val-modif="valModification"
+                    @cancel="trashmodalmodifclose"/>
             <b-table
             :checked-rows.sync="checkedRows"
             :checkable="checkable"
@@ -54,7 +55,7 @@
                     <button class="button is-small is-info" type="button" @click="trashModalModif(props.row)">
                     <b-icon icon="account-edit" size="is-small"/>
                     </button>
-                    <button class="button is-small is-danger" type="button" @click.prevent="trashModal(props.row)">
+                    <button class="button is-small is-danger" type="button" @click="trashModal(props.row)">
                     <b-icon icon="trash-can" size="is-small"/>
                     </button>
                 </div>
@@ -125,8 +126,10 @@ export default {
     },
     trashObjectName () {
       if (this.trashObject) {
-        return this.trashObject.name
+        return this.trashObject
       }
+      else
+        return {}
 
       return null
     },
@@ -148,9 +151,10 @@ export default {
         }
       })
     },
-    trashModal (trashObject) {
-      this.trashObject = trashObject
+    trashModal (data) {
+      this.trashObject = data
       this.isModalActive = true
+  
     },
     trashConfirm () {
       this.isModalActive = false
@@ -163,8 +167,13 @@ export default {
       this.isModalActive = false
     },
     trashModalModif (data) {
+      
       this.valModification = data
       this.isComponentModalActive = true
+    },
+     trashmodalmodifclose () {
+  
+      this.isComponentModalActive = false
     }
   },
   mounted () {
