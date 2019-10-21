@@ -2,18 +2,18 @@
   <div>
     <title-bar :title-stack="titleStack"/>
     <hero-bar>
-      Profile
+      Profil
       <router-link slot="right" to="/" class="button">
-        Dashboard
+        Tableau de bord
       </router-link>
     </hero-bar>
     <section class="section is-main-section">
       <tiles>
         <profile-update-form class="tile is-child"/>
-        <card-component title="Profile" icon="account" class="tile is-child">
+        <card-component title="Profil" icon="account" class="tile is-child">
           <user-avatar class="image has-max-width is-aligned-center"/>
           <hr>
-          <b-field label="Name">
+          <b-field label="Nom">
             <b-input :value="userName" custom-class="is-static" readonly/>
           </b-field>
           <hr>

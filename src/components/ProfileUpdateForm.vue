@@ -1,21 +1,21 @@
 <template>
-  <card-component title="Edit Profile" icon="account-circle">
+  <card-component title="Editer le profil" icon="account-circle">
     <form @submit.prevent="submit">
       <b-field horizontal label="Avatar">
         <file-picker/>
       </b-field>
       <hr>
-      <b-field horizontal label="Name" message="Required. Your name">
+      <b-field horizontal label="Nom" message="Champs obligatoires. Votre nom">
         <b-input v-model="form.name" name="name" required/>
       </b-field>
-      <b-field horizontal label="E-mail" message="Required. Your e-mail">
+      <b-field horizontal label="E-mail" message="Champs obligatoires. Votre e-mail">
         <b-input v-model="form.email" name="email" type="email" required/>
       </b-field>
       <hr>
       <b-field horizontal>
         <div class="control">
-          <button type="submit" class="button is-primary" :class="{'is-loading':isLoading}">
-            Submit
+          <button type="submit" class="button is-info" :class="{'is-loading':isLoading}">
+            Soumettre
           </button>
         </div>
       </b-field>
@@ -61,7 +61,7 @@ export default {
         this.isLoading = false
         this.$store.commit('user', this.form)
         this.$buefy.snackbar.open({
-          message: 'Updated',
+          message: 'Mise à jour',
           queue: false
         })
       }, 500)

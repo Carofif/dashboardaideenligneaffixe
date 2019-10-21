@@ -13,11 +13,6 @@ export default new Router({
       component: Home
     },
     {
-      path: '/forms',
-      name: 'forms',
-      component: () => import(/* webpackChunkName: "forms" */ './views/Forms.vue')
-    },
-    {
       path: '/profile',
       name: 'profile',
       component: () => import(/* webpackChunkName: "profile" */ './views/Profile.vue')

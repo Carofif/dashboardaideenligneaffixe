@@ -34,11 +34,6 @@ export default {
         'Examples',
         [
           {
-            to: '/forms',
-            label: 'Forms',
-            icon: 'square-edit-outline'
-          },
-          {
             to: '/profile',
             label: 'Profile',
             icon: 'account-circle'
