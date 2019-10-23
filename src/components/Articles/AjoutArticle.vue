@@ -56,7 +56,6 @@ export default {
       db.ref('categories/').on('value', (snap) => {
         if (snap.val()) {
           this.categories = Object.values(snap.val())
-          this.$emit('catList', this.categories)
         } else {
           this.categories = []
         }

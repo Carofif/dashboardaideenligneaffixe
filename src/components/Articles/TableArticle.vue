@@ -19,7 +19,7 @@
                   </div>
                   <div class="level-right">
                       <div class="level-item">
-                        <ajout-article v-on:catList="getCategorie"></ajout-article>
+                        <ajout-article @catList="getCategorie"></ajout-article>
                       </div>
                   </div>
               </div>
@@ -48,7 +48,7 @@
                 {{ props.row.date }}
                 </b-table-column>
                 <b-table-column label="Type Catégorie" field="typeCategorie" sortable>
-                {{ findCategorie(props.row.idCat) }}
+                {{ getCategorie(props.row.idCat) }}
                 </b-table-column>
                 <b-table-column label="Actions" custom-key="actions" class="is-actions-cell">
                 <div class="buttons">
@@ -151,12 +151,19 @@ export default {
         }
       })
     }, 
-     getCategorie (e) {
+     getCategorie (id) {
        this.categories = e
+      db.ref('categories/').on('value', (snap) => {
+        console.log("cat")
+        if (snap.val()) {
+          this.categories = Object.values(snap.val())
+          return this.categories ? " t" : this.categories.find( cat => cat.id === id).libelle
+        } else {
+          this.categories = []
+        }
+      })
     },
-    findCategorie(id) {
-      return this.categories ? " t" : this.categories.find( cat => cat.id === id).libelle
-    },
+   
     trashModal (trashObject) {
       this.trashObject = trashObject
       this.isModalActive = true
@@ -182,6 +189,7 @@ export default {
   },
   destroyed () {
     db.ref('articles/').off()
+    db.ref('categories/').off()
   }
 }
 </script>
