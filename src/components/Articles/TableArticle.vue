@@ -19,7 +19,7 @@
                   </div>
                   <div class="level-right">
                       <div class="level-item">
-                        <ajout-article></ajout-article>
+                        <ajout-article v-on:catList="getCategorie"></ajout-article>
                       </div>
                   </div>
               </div>
@@ -48,7 +48,7 @@
                 {{ props.row.date }}
                 </b-table-column>
                 <b-table-column label="Type Catégorie" field="typeCategorie" sortable>
-                {{ props.row.idCat }}
+                {{ findCategorie(props.row.idCat) }}
                 </b-table-column>
                 <b-table-column label="Actions" custom-key="actions" class="is-actions-cell">
                 <div class="buttons">
@@ -114,7 +114,8 @@ export default {
       paginated: false,
       perPage: 10,
       checkedRows: [],
-      valModification: {}
+      valModification: {},
+      categories: []
     }
   },
   computed: {
@@ -142,12 +143,19 @@ export default {
   methods: {
     getArticles () {
       db.ref('articles').on('value', (snap) => {
+        console.log("at")
         if (snap.val()) {
           this.articles = Object.values(snap.val())
         } else {
           this.articles = []
         }
       })
+    }, 
+     getCategorie (e) {
+       this.categories = e
+    },
+    findCategorie(id) {
+      return this.categories ? " t" : this.categories.find( cat => cat.id === id).libelle
     },
     trashModal (trashObject) {
       this.trashObject = trashObject
@@ -170,6 +178,7 @@ export default {
   },
   mounted () {
     this.getArticles()
+    console.log(this.categories)
   },
   destroyed () {
     db.ref('articles/').off()

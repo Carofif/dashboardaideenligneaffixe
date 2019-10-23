@@ -25,7 +25,7 @@
                   </section>
                   <footer class="modal-card-foot">
                     <button class="button" type="button">Fermer</button>
-                    <button class="button is-info">Valider</button>
+                    <button class="button is-info" @click="addCategorie">Valider</button>
                   </footer>
               </div>
         </b-modal>
@@ -43,21 +43,18 @@ export default {
       categorieImageUrl: null
     }
   },
-   methods: {
-      //Cette fonction permet de recupere l'url de l'image ajoute
-   //et de la sauvegarder dans une variable
-   saveImageUrl (e) {
+  methods: {
+     saveImageUrl (e) {
      const imge = e;
      const reader = new FileReader();
      reader.readAsDataURL(imge);
      reader.onload = e =>{
        this.categorieImageUrl = e.target.result;
      };},
-   //fonction permettant d'ajoute une categorie sur firebase
-    addCategorie () {
+     addCategorie () {
       if(this.newCategorie.length){
-        const id = db.ref('categories').push({categorie: this.newCategorie, image: this.categorieImageUrl}).key
-        dataRef.child(id).update({id: id})
+        const id = db.ref('categories').push({libelle: this.newCategorie, image: this.categorieImageUrl}).key
+        db.ref('categories').child(id).update({id: id})
         this.newCategorie = ''
         this.$buefy.toast.open({
           message: 'Categorie enregistre',
@@ -73,6 +70,6 @@ export default {
       }
     
    }
- }
+  }
 }
 </script>
