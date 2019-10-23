@@ -1,11 +1,16 @@
 <template>
-  <b-modal :active.sync="isModalActive" has-modal-card>
+  <b-modal :active.sync="isModalActive" has-modal-card trap-focus>
     <div class="modal-card">
       <header class="modal-card-head">
         <p class="modal-card-title">Confirmer l'action</p>
       </header>
       <section class="modal-card-body">
         <p>Cela supprimera définitivement <b>{{ trashObjectName.libelle }}</b></p>
+        <p v-if="trashObjectArticle.length" >Cette catégorie contient des articles. <br/> 
+          Si vous supprimez cette catégorie , tous ses articles contenues seront aussi Supprimer
+
+         </p>
+
         <p>L'action ne peut pas être annulée.</p>
       </section>
       <footer class="modal-card-foot">
@@ -30,6 +35,10 @@ export default {
     trashObjectName: {
       type: Object,
       default: {}
+    },
+    trashObjectArticle: {
+      type: Array,
+      default: []
     }
   },
   data () {
@@ -44,6 +53,12 @@ export default {
     confirmer () {
          if(this.trashObjectName.libelle )
        {
+        
+        for (let i=0;i++;i<=this.trashObjectArticle.length-1)
+       {
+         db.ref('articles').child(this.trashObjectArticle[i].id).remove() ;
+        }
+
            db.ref('categories').child(this.trashObjectName.id).remove() ;   
 
              this.$buefy.toast.open({
@@ -57,17 +72,27 @@ export default {
       this.$emit('confirm')
     }
   },
+  destroyed () {
+    db.ref('categories').off()
+    db.ref('Article').off()
+  },
   watch: {
     isActive (newValue) {
       this.isModalActive = newValue
+      
     },
     isModalActive (newValue) {
       if (!newValue) {
+        
         this.annuler()
       }
     },
     trashObjectName (newValue) {
       this.trashObjectName = newValue
+      
+    },
+     trashObjectArticle (newValue) {
+      this.trashObjectArticle = newValue
       
     }
   }

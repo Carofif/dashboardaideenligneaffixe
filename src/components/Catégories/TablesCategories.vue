@@ -26,8 +26,8 @@
             </header>
             <div class="card-content">
                  <div>
-            <modal-box :is-active="isModalActive" :trash-object-name="trashObjectName" @confirm="trashConfirm"
-                    @cancel="trashCancel"/>
+            <modal-box :is-active="isModalActive" :trash-object-name="trashObjectName" :trash-object-article="trashObjectArticle"
+                    @confirm="trashConfirm" @annuler="trashCancel"/>
             <modifier-categorie :is-active="isComponentModalActive" :val-modif="valModification"
                     @cancel="trashmodalmodifclose"/>
             <b-table
@@ -106,10 +106,10 @@ export default {
   data () {
     return {
       isComponentModalActive: false,
-      trashObjectModif: null,
       isModalActive: false,
       trashObject: null,
       categories: [],
+      articles: [],
       isLoading: false,
       paginated: false,
       perPage: 10,
@@ -131,23 +131,30 @@ export default {
       else
         return {}
 
-      return null
     },
-    trashObjectNameModif () {
-      if (this.trashObjectModif) {
-        return this.trashObjectModif.name
+    trashObjectArticle () {
+      if (this.trashObject) {
+        return this.articles.filter(art => art.idCat === this.trashObject.id)
       }
+      else
+        return []
 
-      return null
     }
   },
   methods: {
-    getCategories () {
+    getCategoriesAndArticles () {
       db.ref('categories').on('value', (snap) => {
         if (snap.val()) {
           this.categories = Object.values(snap.val())
         } else {
           this.categories = []
+        }
+      })
+       db.ref('articles').on('value', (snap) => {
+        if (snap.val()) {
+          this.articles = Object.values(snap.val())
+        } else {
+          this.articles = []
         }
       })
     },
@@ -177,10 +184,11 @@ export default {
     }
   },
   mounted () {
-    this.getCategories()
+    this.getCategoriesAndArticles()
   },
   destroyed () {
     db.ref('categories/').off()
+    db.ref('articles/').off()
   }
 }
 </script>
