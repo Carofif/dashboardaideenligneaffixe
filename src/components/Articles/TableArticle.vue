@@ -118,6 +118,9 @@ export default {
       categories: []
     }
   },
+  firebase: {
+    categories: db.ref('categories')
+  },
   computed: {
     titleStack () {
       return [
@@ -150,20 +153,11 @@ export default {
           this.articles = []
         }
       })
-    }, 
-     getCategorie (id) {
-       this.categories = e
-      db.ref('categories/').on('value', (snap) => {
-        console.log("cat")
-        if (snap.val()) {
-          this.categories = Object.values(snap.val())
-          return this.categories ? " t" : this.categories.find( cat => cat.id === id).libelle
-        } else {
-          this.categories = []
-        }
-      })
     },
-   
+     getCategorie (id) {
+      return this.categories ? " " : this.categories.find( cat => cat.id === id).libelle
+    },
+
     trashModal (trashObject) {
       this.trashObject = trashObject
       this.isModalActive = true
@@ -189,7 +183,6 @@ export default {
   },
   destroyed () {
     db.ref('articles/').off()
-    db.ref('categories/').off()
   }
 }
 </script>
