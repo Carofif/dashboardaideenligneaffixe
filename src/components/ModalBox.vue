@@ -53,13 +53,13 @@ export default {
     confirmer () {
          if(this.trashObjectName.libelle )
        {
-        
-        for (let i=0;i++;i<=this.trashObjectArticle.length-1)
-       {
-         db.ref('articles').child(this.trashObjectArticle[i].id).remove() ;
+        this.$compteur=0
+       while ( this.$compteur <=  this.trashObjectArticle.length-1) {
+       db.ref('articles').child(this.trashObjectArticle[this.$compteur].id).remove() ;
+       this.$compteur++
         }
 
-           db.ref('categories').child(this.trashObjectName.id).remove() ;   
+         db.ref('categories').child(this.trashObjectName.id).remove() ;   
 
              this.$buefy.toast.open({
             message: 'Modification de Categorie confirmée',

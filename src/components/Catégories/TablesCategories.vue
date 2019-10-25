@@ -32,8 +32,6 @@
                     @cancel="trashmodalmodifclose"/>
             <b-table
             :checked-rows.sync="checkedRows"
-            :checkable="checkable"
-            :loading="isLoading"
             :paginated="paginated"
             :per-page="perPage"
             :striped="true"
@@ -41,21 +39,21 @@
             default-sort="name"
             :data="categories">
 
-            <template slot-scope="props">
+            <template slot-scope="Lcategorie">
                 <b-table-column class="has-no-head-mobile is-image-cell">
                 <div class="image">
-                    <img :src="props.row.image" class="image is-96x96">
+                    <img :src="Lcategorie.row.image" class="image is-96x96">
                 </div>
                 </b-table-column>
                 <b-table-column label="Nom de la Catégorie" field="libelle" sortable>
-                {{ props.row.libelle }}
+                {{ Lcategorie.row.libelle }}
                 </b-table-column>
                 <b-table-column label="Actions" custom-key="actions" class="is-actions-cell">
                 <div class="buttons">
-                    <button class="button is-small is-info" type="button" @click="trashModalModif(props.row)">
+                    <button class="button is-small is-info" type="button" @click="trashModalModif(Lcategorie.row)">
                     <b-icon icon="account-edit" size="is-small"/>
                     </button>
-                    <button class="button is-small is-danger" type="button" @click="trashModal(props.row)">
+                    <button class="button is-small is-danger" type="button" @click="trashModal(Lcategorie.row)">
                     <b-icon icon="trash-can" size="is-small"/>
                     </button>
                 </div>
@@ -68,7 +66,7 @@
                     <p>
                     <b-icon icon="dots-horizontal" size="is-large"/>
                     </p>
-                    <p>Récupération des données...</p>
+                    <p>Récupération des données...&hellip;</p>
                 </template>
                 <template v-else>
                     <p>
@@ -97,12 +95,6 @@ import ModifierCategorie from '@/components/Catégories/ModifierCategorie'
 export default {
   name: 'Table Catégorie',
   components: { HeroBar, TitleBar, ModalBox, AjoutCategorie, ModifierCategorie },
-  props: {
-    checkable: {
-      type: Boolean,
-      default: false
-    }
-  },
   data () {
     return {
       isComponentModalActive: false,
@@ -110,7 +102,7 @@ export default {
       trashObject: null,
       categories: [],
       articles: [],
-      isLoading: false,
+      isLoading: true,
       paginated: false,
       perPage: 10,
       checkedRows: [],
