@@ -31,7 +31,7 @@ export default {
             label: 'Tableau de bord'
           }
         ],
-        'Examples',
+        '',
         [
           {
             to: '/profile',

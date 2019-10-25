@@ -94,7 +94,7 @@ import { db } from '@/plugins/firebase'
 import AjoutCategorie from '@/components/Catégories/AjoutCategorie'
 import ModifierCategorie from '@/components/Catégories/ModifierCategorie'
 export default {
-  name: 'Table Catégorie',
+  name: 'TableCategorie',
   components: { HeroBar, TitleBar, ModalBox, AjoutCategorie, ModifierCategorie },
   props: {
     checkable: {

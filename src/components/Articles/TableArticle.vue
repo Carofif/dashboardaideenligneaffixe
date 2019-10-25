@@ -95,7 +95,7 @@ import { db } from '@/plugins/firebase'
 import AjoutArticle from '@/components/Articles/AjoutArticle'
 import ModifierArticle from '@/components/Articles/ModifierArticle'
 export default {
-  name: 'Table Article',
+  name: 'TableArticle',
   components: { HeroBar, TitleBar, ModalBox, AjoutArticle, ModifierArticle },
   props: {
     checkable: {
