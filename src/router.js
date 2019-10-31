@@ -1,21 +1,30 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
+import Dash from './views/dash/index.vue'
+import Home from './views/dash/Home.vue'
+import Connexion from './views/Connexion.vue'
 
 Vue.use(Router)
 
-export default new Router({
-  base: process.env.BASE_URL,
+const router = new Router({
+  mode: 'history',
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: Home
+      path: '*',
+      redirect: '/'
     },
     {
-      path: '/forms',
-      name: 'forms',
-      component: () => import(/* webpackChunkName: "forms" */ './views/Forms.vue')
+      path: '/',
+      name: 'dash',
+      component: Dash,
+      redirect: 'dash/home',
+      children: [
+        {
+          path: '/dash/home',
+          name: 'home',
+          component: Home
+        }
+      ]
     },
     {
       path: '/profile',
@@ -31,6 +40,11 @@ export default new Router({
       path: '/tablecategorie',
       name: 'tablecategorie',
       component: () => import(/* webpackChunkName: "tablecategorie" */ './components/Catégories/TablesCategories.vue')
+    },
+    {
+      path: '/connexion',
+      name: 'Connexion',
+      component: Connexion
     }
   ],
   scrollBehavior (to, from, savedPosition) {
@@ -41,3 +55,5 @@ export default new Router({
     }
   }
 })
+
+export default router

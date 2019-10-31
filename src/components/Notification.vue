@@ -7,7 +7,7 @@
         </div>
       </div>
       <div class="level-right">
-        <button type="button" class="button is-small is-white" @click="dismiss">Dismiss</button>
+        <button type="button" class="button is-small is-white" @click="dismiss">Rejeter</button>
       </div>
     </div>
   </div>
@@ -25,7 +25,7 @@ export default {
     dismiss () {
       this.isDismissed = true
       this.$buefy.snackbar.open({
-        message: 'Dismissed',
+        message: 'Rejeté',
         queue: false
       })
     }
