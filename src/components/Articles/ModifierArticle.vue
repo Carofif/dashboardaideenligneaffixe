@@ -6,7 +6,7 @@
                    </header>
                   <section class="modal-card-body">
                      <b-field label="Catégorie">
-                          <b-select placeholder="Selectionner la catégorie" v-model="modif.idCat">
+                          <b-select placeholder="Selectionner la catégorie" v-model ="newArt.idCat" >
                               <option
                                 v-for="categorie in categories"
                                 :value="categorie.id"
@@ -23,8 +23,8 @@
                         </b-field>
                   </section>
                   <footer class="modal-card-foot">
-                    <button class="button" type="button">Fermer</button>
-                    <button class="button is-info">Valider</button>
+                    <button class="button" type="button" @click="annuler">Fermer</button>
+                    <button class="button is-info" @click="modifierArt">Valider</button>
                   </footer>
               </div>
         </b-modal>
@@ -39,6 +39,7 @@ export default {
     return {
       isComponentModalActive: false,
       modif: {},
+      newArt: {},
       categories: []
     }
   },
@@ -56,12 +57,37 @@ export default {
       })
     },
     annuler () {
-      this.$emit('annuler')
+      this.$emit('cancel')
     },
     confirmer () {
       this.$emit('confirmer')
-    }
+    },
+   modifierArt () {
+      if(this.modif.titre.length && this.modif.content.length )
+       {
+         this.modif=this.newArt
+           db.ref('articles').child(this.modif.id).update({content: this.modif.content, idCat: this.modif.idCat, titre: this.modif.titre  });   
+
+             this.$buefy.toast.open({
+            message: 'Modification confirmé',
+            type: 'is-success',
+            position: 'is-bottom'
+
+           });
+           
+       }
+       else
+       {
+         this.$buefy.toast.open({
+            message: 'veuillez renseigner tous les champs',
+            type: 'is-danger',
+            position: 'is-bottom'
+
+           })
+       }
+    },
   },
+  
   watch: {
     isActive (newValue) {
       this.isComponentModalActive = newValue
@@ -73,6 +99,7 @@ export default {
     },
     valModif (val) {
       this.modif = val
+      this.newArt=val
     }
   },
   mounted () {
