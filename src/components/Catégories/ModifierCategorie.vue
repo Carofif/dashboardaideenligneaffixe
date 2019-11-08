@@ -57,27 +57,21 @@ export default {
       }
     },
     modifierCat () {
-      if(this.modif.libelle.length )
-       {
-           db.ref('categories').child(this.modif.id).update({libelle: this.modif.libelle, image: this.modif.image }) ;   
-
-             this.$buefy.toast.open({
-            message: 'Modification de Categorie confirmé',
-            type: 'is-success',
-            position: 'is-bottom'
-
-           });
-           
-       }
-       else
-       {
-         this.$buefy.toast.open({
-            message: 'veuillez renseigner le nom de la categorie ou selectionner une image',
-            type: 'is-danger',
-            position: 'is-bottom'
-
-           })
-       }
+      if(this.modif.libelle.length ) {
+        db.ref('categories').child(this.modif.id).update({ libelle: this.modif.libelle, image: this.modif.image })
+        this.$buefy.toast.open({
+          message: 'Modification de Categorie confirmé',
+          type: 'is-success',
+          position: 'is-bottom'
+        })
+      }
+      else {
+      this.$buefy.toast.open({
+        message: 'veuillez renseigner le nom de la categorie ou selectionner une image',
+        type: 'is-danger',
+        position: 'is-bottom'
+      })
+      }
     }
   },
   watch: {

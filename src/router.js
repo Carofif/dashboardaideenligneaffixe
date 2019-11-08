@@ -23,23 +23,23 @@ const router = new Router({
           path: '/dash/home',
           name: 'home',
           component: Home
+        },
+        {
+          path: '/profile',
+          name: 'profile',
+          component: () => import(/* webpackChunkName: "profile" */ './views/Profile.vue')
+        },
+        {
+          path: '/tablearticle',
+          name: 'tablearticle',
+          component: () => import(/* webpackChunkName: "tablearticle" */ './components/Articles/TableArticle.vue')
+        },
+        {
+          path: '/tablecategorie',
+          name: 'tablecategorie',
+          component: () => import(/* webpackChunkName: "tablecategorie" */ './components/Catégories/TablesCategories.vue')
         }
       ]
-    },
-    {
-      path: '/profile',
-      name: 'profile',
-      component: () => import(/* webpackChunkName: "profile" */ './views/Profile.vue')
-    },
-    {
-      path: '/tablearticle',
-      name: 'tablearticle',
-      component: () => import(/* webpackChunkName: "tablearticle" */ './components/Articles/TableArticle.vue')
-    },
-    {
-      path: '/tablecategorie',
-      name: 'tablecategorie',
-      component: () => import(/* webpackChunkName: "tablecategorie" */ './components/Catégories/TablesCategories.vue')
     },
     {
       path: '/connexion',

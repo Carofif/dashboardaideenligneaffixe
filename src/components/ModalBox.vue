@@ -6,11 +6,9 @@
       </header>
       <section class="modal-card-body">
         <p>Cela supprimera définitivement <b>{{ trashObjectName.libelle }}</b></p>
-        <p v-if="trashObjectArticle.length" >Cette catégorie contient des articles. <br/> 
+        <p v-if="trashObjectArticle.length" >Cette catégorie contient des articles. <br/>
           Si vous supprimez cette catégorie , tous ses articles contenues seront aussi Supprimer
-
-         </p>
-
+        </p>
         <p>L'action ne peut pas être annulée.</p>
       </section>
       <footer class="modal-card-foot">
@@ -34,11 +32,11 @@ export default {
     },
     trashObjectName: {
       type: Object,
-      default: {}
+      default: function () { return {} }
     },
     trashObjectArticle: {
       type: Array,
-      default: []
+      default: function () { return [] }
     }
   },
   data () {
@@ -51,24 +49,19 @@ export default {
       this.$emit('annuler')
     },
     confirmer () {
-         if(this.trashObjectName.libelle )
-       {
-        this.$compteur=0
-       while ( this.$compteur <=  this.trashObjectArticle.length-1) {
-       db.ref('articles').child(this.trashObjectArticle[this.$compteur].id).remove() ;
-       this.$compteur++
+      if (this.trashObjectName.libelle) {
+        this.$compteur = 0
+        while (this.$compteur <= this.trashObjectArticle.length - 1) {
+          db.ref('articles').child(this.trashObjectArticle[this.$compteur].id).remove()
+          this.$compteur++
         }
-
-         db.ref('categories').child(this.trashObjectName.id).remove() ;   
-
-             this.$buefy.toast.open({
-            message: 'Modification de Categorie confirmée',
-            type: 'is-success',
-            position: 'is-bottom'
-
-           });
-           
-       }
+        db.ref('categories').child(this.trashObjectName.id).remove()
+        this.$buefy.toast.open({
+          message: 'Modification de Categorie confirmée',
+          type: 'is-success',
+          position: 'is-bottom'
+        })
+      }
       this.$emit('confirm')
     }
   },
@@ -79,21 +72,17 @@ export default {
   watch: {
     isActive (newValue) {
       this.isModalActive = newValue
-      
     },
     isModalActive (newValue) {
       if (!newValue) {
-        
         this.annuler()
       }
     },
     trashObjectName (newValue) {
       this.trashObjectName = newValue
-      
     },
-     trashObjectArticle (newValue) {
+    trashObjectArticle (newValue) {
       this.trashObjectArticle = newValue
-      
     }
   }
 }

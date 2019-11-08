@@ -120,17 +120,17 @@ export default {
       if (this.trashObject) {
         return this.trashObject
       }
-      else
+      else {
         return {}
-
+      }
     },
     trashObjectArticle () {
       if (this.trashObject) {
         return this.articles.filter(art => art.idCat === this.trashObject.id)
       }
-      else
+      else {
         return []
-
+      }
     }
   },
   methods: {
@@ -153,7 +153,6 @@ export default {
     trashModal (data) {
       this.trashObject = data
       this.isModalActive = true
-  
     },
     trashConfirm () {
       this.isModalActive = false
@@ -165,13 +164,11 @@ export default {
     trashCancel () {
       this.isModalActive = false
     },
-    trashModalModif (data) {
-      
+    trashModalModif (data) {  
       this.valModification = data
       this.isComponentModalActive = true
     },
      trashmodalmodifclose () {
-  
       this.isComponentModalActive = false
     }
   },

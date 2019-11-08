@@ -42,16 +42,13 @@ export default {
       this.$emit('annuler')
     },
     confirmer () {
-         if(this.trashObjectName.titre )
-       {
+         if(this.trashObjectName.titre) {
          db.ref('articles').child(this.trashObjectName.id).remove() ; 
          this.$buefy.toast.open({
             message: 'Suppression confirmée',
             type: 'is-success',
             position: 'is-bottom'
-
-           });
-           
+        })
        }
       this.$emit('confirm')
     }
@@ -62,17 +59,14 @@ export default {
   watch: {
     isActive (newValue) {
       this.isModalActive = newValue
-      
     },
     isModalActive (newValue) {
       if (!newValue) {
-        
         this.annuler()
       }
     },
     trashObjectName (newValue) {
       this.trashObjectName = newValue
-      
     }
   }
 }
