@@ -1,5 +1,6 @@
 import * as firebase from 'firebase/app'
 import 'firebase/database'
+import 'firebase/auth'
 import 'firebase/storage'
 
 const app = firebase.initializeApp({
@@ -14,3 +15,4 @@ const app = firebase.initializeApp({
 
 export const db = app.database()
 export const storage = app.storage()
+export const auth = app.auth()

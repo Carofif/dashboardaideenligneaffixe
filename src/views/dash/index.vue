@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div>
     <nav-bar/>
     <aside-menu :menu="menu"/>
     <router-view/>
@@ -8,7 +8,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import NavBar from '@/components/NavBar'
 import AsideMenu from '@/components/AsideMenu'
 import FooterBar from '@/components/FooterBar'
@@ -20,10 +19,14 @@ export default {
     AsideMenu,
     NavBar
   },
+  data () {
+    return {
+      show: false
+    }
+  },
   computed: {
     menu () {
       return [
-        'General',
         [
           {
             to: '/',
@@ -47,19 +50,6 @@ export default {
             to: '/tablearticle',
             label: 'Articles',
             icon: 'newspaper-variant-multiple-outline'
-          }
-        ],
-        'About',
-        [
-          {
-            href: 'https://admin-one-vue-cli.justboil.me',
-            label: 'Premium Demo',
-            icon: 'credit-card'
-          },
-          {
-            href: 'https://justboil.me/bulma-admin-template/one',
-            label: 'About',
-            icon: 'help-circle'
           }
         ]
       ]
