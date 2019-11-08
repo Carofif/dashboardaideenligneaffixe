@@ -6,7 +6,7 @@
           <div class="container">
             <div class="navbar-brand">
               <a class="navbar-item has-text-white">
-                <b>Tableau de Bord</b>  Aide en ligne Affixe
+                <b>Tableau de Bord </b>  Aide en ligne Affixe
               </a>
             </div>
           </div>
@@ -121,7 +121,7 @@ export default {
       } catch (error) {
         this.$buefy.toast.open({
           duration: 5000,
-          message: error,
+          message: "Une erreur s'est produite, veuillez renseigner l'email et le mot de passe encore une fois",
           position: 'is-bottom',
           type: 'is-danger'
         })
