@@ -38,7 +38,7 @@ export default {
     },
     trashObjectArticle: {
       type: Array,
-      default: []
+      default: function() { return [] }
     }
   },
   data () {

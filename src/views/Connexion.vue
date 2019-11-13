@@ -125,6 +125,7 @@ export default {
           position: 'is-bottom',
           type: 'is-danger'
         })
+       
         this.loading = false
       }
     }

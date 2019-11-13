@@ -111,7 +111,7 @@ export default {
       isModalActive: false,
       trashObject: null,
       articles: [],
-      isLoading: false,
+      isLoading: true,
       paginated: false,
       perPage: 10,
       checkedRows: [],
@@ -172,6 +172,7 @@ export default {
   },
   watch: {
     articles (newValue) {
+      this.isLoading=false
       this.articles = newValue
        this.$compteur=0
        while ( this.$compteur <=  this.articles.length-1) {

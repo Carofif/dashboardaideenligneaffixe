@@ -8,7 +8,7 @@
       <b-field horizontal label="Nom" message="Champs obligatoires. Votre nom">
         <b-input v-model="form.name" name="name" required/>
       </b-field>
-      <b-field horizontal label="E-mail" message="Champs obligatoires. Votre e-mail">
+      <b-field horizontal="" label="E-mail" message="Champs obligatoires. Votre e-mail">
         <b-input v-model="form.email" name="email" type="email" required/>
       </b-field>
       <hr>

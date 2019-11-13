@@ -83,6 +83,7 @@
 import { mapState } from 'vuex'
 import NavBarMenu from '@/components/NavBarMenu'
 import UserAvatar from '@/components/UserAvatar'
+import { auth } from '@/plugins/firebase'
 
 export default {
   name: 'NavBar',
@@ -116,6 +117,7 @@ export default {
       this.isMenuNavBarActive = (!this.isMenuNavBarActive)
     },
     deconnexion () {
+      
       this.$buefy.snackbar.open({
         message: 'Déconnexion cliqué',
         queue: false

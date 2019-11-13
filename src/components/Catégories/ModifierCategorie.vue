@@ -11,7 +11,7 @@
                       </p>
                     </figure>
                     <b-field class="file">
-                      <b-upload v-model="modif.image" @input="imageAdd">
+                      <b-upload @input="imageAdd">
                         <a class="button is-info">
                           <b-icon icon="upload"></b-icon>
                           <span>Cliquer pour ajouter l'image de la catégorie</span>
@@ -20,7 +20,7 @@
                     </b-field>
 
                     <b-field label="Catégorie">
-                      <b-input v-model="modif.libelle"></b-input>
+                      <b-input v-model="newCat.libelle"></b-input>
                     </b-field>
                   </section>
                   <footer class="modal-card-foot">
@@ -37,6 +37,7 @@ export default {
   data () {
     return {
       isComponentModalActive: false,
+     newCat: {},
       modif: {}
     }
   },
@@ -53,12 +54,13 @@ export default {
       const reader = new FileReader();
       reader.readAsDataURL(imge);
       reader.onload = e =>{
-          this.modif.image = e.target.result;
+          this.newCat.image = e.target.result;
       }
     },
     modifierCat () {
       if(this.modif.libelle.length )
        {
+         this.modif=this.newCat
            db.ref('categories').child(this.modif.id).update({libelle: this.modif.libelle, image: this.modif.image }) ;   
 
              this.$buefy.toast.open({
@@ -91,6 +93,12 @@ export default {
     },
     valModif (val) {
       this.modif = val
+    this.newCat={
+      libelle : this.modif.libelle,
+      imgcat : this.modif.image
+    }
+      
+     
     }
   }
 }

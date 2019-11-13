@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Dash from './views/dash/index.vue'
 import Home from './views/dash/Home.vue'
 import Connexion from './views/Connexion.vue'
+import firebase from 'firebase'
 
 Vue.use(Router)
 
@@ -17,29 +18,32 @@ const router = new Router({
       path: '/',
       name: 'dash',
       component: Dash,
+      meta: {
+        requiresAuth: true
+      },
       redirect: 'dash/home',
       children: [
         {
           path: '/dash/home',
           name: 'home',
           component: Home
+        },
+        {
+          path: '/profile',
+          name: 'profile',
+          component: () => import(/* webpackChunkName: "profile" */ './views/Profile.vue')
+        },
+        {
+          path: '/tablearticle',
+          name: 'tablearticle',
+          component: () => import(/* webpackChunkName: "tablearticle" */ './components/Articles/TableArticle.vue')
+        },
+        {
+          path: '/tablecategorie',
+          name: 'tablecategorie',
+          component: () => import(/* webpackChunkName: "tablecategorie" */ './components/Catégories/TablesCategories.vue')
         }
       ]
-    },
-    {
-      path: '/profile',
-      name: 'profile',
-      component: () => import(/* webpackChunkName: "profile" */ './views/Profile.vue')
-    },
-    {
-      path: '/tablearticle',
-      name: 'tablearticle',
-      component: () => import(/* webpackChunkName: "tablearticle" */ './components/Articles/TableArticle.vue')
-    },
-    {
-      path: '/tablecategorie',
-      name: 'tablecategorie',
-      component: () => import(/* webpackChunkName: "tablecategorie" */ './components/Catégories/TablesCategories.vue')
     },
     {
       path: '/connexion',
@@ -56,4 +60,12 @@ const router = new Router({
   }
 })
 
+router.beforeEach((to, from, next) => {
+  const currentUser = firebase.auth().currentUser
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+  console.log(currentUser)
+  if (requiresAuth && !currentUser) next('connexion')
+  else if (!requiresAuth && currentUser) next('dash')
+  else next()
+})
 export default router
