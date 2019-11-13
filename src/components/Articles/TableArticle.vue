@@ -33,7 +33,6 @@
             <b-table
             :checked-rows.sync="checkedRows"
             :checkable="checkable"
-            :loading="isLoading"
             :paginated="paginated"
             :per-page="perPage"
             :striped="true"
@@ -85,7 +84,6 @@
         </div>
     </section>
   </div>
-
 </template>
 
 <script>
@@ -96,7 +94,7 @@ import AjoutArticle from '@/components/Articles/AjoutArticle'
 import ModifierArticle from '@/components/Articles/ModifierArticle'
 import SupprArticle from '@/components/Articles/SupprArticle'
 export default {
-  name: 'Table Article',
+  name: 'TableArticle',
   components: { HeroBar, TitleBar, AjoutArticle, ModifierArticle , SupprArticle },
   props: {
     checkable: {
@@ -129,9 +127,9 @@ export default {
       if (this.trashObject) {
         return this.trashObject
       }
-      else
+      else {
         return {}
-
+      } 
     }
   },
   methods: {
@@ -143,9 +141,6 @@ export default {
           this.articles = []
         }
       })
-        
-      
-       
     },
     trashModal (trashObject) {
       this.trashObject = trashObject
@@ -165,8 +160,7 @@ export default {
       this.valModification = data
       this.isComponentModalActive = true
     },
-     trashmodalmodifclose () {
-  
+    trashmodalmodifclose () {
       this.isComponentModalActive = false
     }
   },
@@ -174,16 +168,12 @@ export default {
     articles (newValue) {
       this.isLoading=false
       this.articles = newValue
-       this.$compteur=0
-       while ( this.$compteur <=  this.articles.length-1) {
-          
+       this.$compteur = 0
+       while ( this.$compteur <=  this.articles.length-1) { 
        db.ref('categories/' + this.articles[this.$compteur].idCat).once('value', (snap) => {
           if (snap.val()) {
             this.$categories = snap.val()
-           
-         
           } else {
-            
             this.$categories = {}
           }
         })
@@ -194,16 +184,13 @@ export default {
             idCat:  this.articles[this.$compteur].idCat,
             titre:  this.articles[this.$compteur].titre,
             nomcat:  this.$categories.libelle
-
         }
-       
        this.$compteur++
        }
     }
   },
   mounted () {
     this.getArticles()
-    
   },
   destroyed () {
     db.ref('articles/').off()
