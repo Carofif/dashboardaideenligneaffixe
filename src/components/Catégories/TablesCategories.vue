@@ -119,8 +119,7 @@ export default {
     trashObjectName () {
       if (this.trashObject) {
         return this.trashObject
-      }
-      else {
+      } else {
         return {}
       }
     },

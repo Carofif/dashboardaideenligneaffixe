@@ -84,8 +84,6 @@ import { mapState } from 'vuex'
 import NavBarMenu from '@/components/NavBarMenu'
 import UserAvatar from '@/components/UserAvatar'
 import { auth } from '@/plugins/firebase'
-import firebase from 'firebase'
-import Router from 'vue-router'
 
 export default {
   name: 'NavBar',
