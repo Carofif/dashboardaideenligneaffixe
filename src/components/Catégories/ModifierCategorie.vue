@@ -7,7 +7,7 @@
                   <section class="modal-card-body">
                     <figure class="media-left">
                       <p class="image is-64x64">
-                        <img :src="modif.image">
+                        <img :src="newCat.imgcat">
                       </p>
                     </figure>
                     <b-field class="file">
@@ -54,7 +54,7 @@ export default {
       const reader = new FileReader();
       reader.readAsDataURL(imge);
       reader.onload = e =>{
-          this.newCat.image = e.target.result;
+          this.newCat.imgcat = e.target.result;
       }
     },
     modifierCat () {
@@ -85,7 +85,11 @@ export default {
   watch: {
     isActive (newValue) {
       this.isComponentModalActive = newValue
-    },
+      this.newCat={
+      libelle : this.modif.libelle,
+      imgcat : this.modif.image
+    }
+  },
     isComponentModalActive (newValue) {
       if (!newValue) {
         this.annuler()

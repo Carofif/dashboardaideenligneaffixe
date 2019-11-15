@@ -55,12 +55,12 @@
               <b-icon icon="settings" custom-size="default"></b-icon>
               <span>Paramètres</span>
             </a>
-            <a class="navbar-item">
+            <a class="navbar-item" >
               <b-icon icon="email" custom-size="default"></b-icon>
               <span>Messages</span>
             </a>
             <hr class="navbar-divider">
-            <a class="navbar-item">
+            <a class="navbar-item"  @click="deconnexion">
               <b-icon icon="logout" custom-size="default"></b-icon>
               <span>Déconnexion</span>
             </a>
@@ -84,6 +84,8 @@ import { mapState } from 'vuex'
 import NavBarMenu from '@/components/NavBarMenu'
 import UserAvatar from '@/components/UserAvatar'
 import { auth } from '@/plugins/firebase'
+import firebase from 'firebase'
+import Router from 'vue-router'
 
 export default {
   name: 'NavBar',
@@ -117,11 +119,18 @@ export default {
       this.isMenuNavBarActive = (!this.isMenuNavBarActive)
     },
     deconnexion () {
-      
+     
+     
       this.$buefy.snackbar.open({
         message: 'Déconnexion cliqué',
         queue: false
       })
+      if(auth.currentUser)
+      {
+        auth.signOut().then(() => {
+          this.$router.replace('connexion')
+         })
+      }
     }
   }
 }
