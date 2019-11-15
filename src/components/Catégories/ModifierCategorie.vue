@@ -78,16 +78,16 @@ export default {
             type: 'is-danger',
             position: 'is-bottom'
 
-           })
-       }
+        })
+      }
     }
   },
   watch: {
     isActive (newValue) {
       this.isComponentModalActive = newValue
-      this.newCat={
-        libelle : this.modif.libelle,
-        imgcat : this.modif.image
+      this.newCat = {
+        libelle: this.modif.libelle,
+        imgcat: this.modif.image
       }
     },
     isComponentModalActive (newValue) {
