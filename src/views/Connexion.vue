@@ -124,7 +124,7 @@ export default {
           this.loading = true
           await auth.signInWithEmailAndPassword(this.email.value, this.password.value)
           this.loading = false
-        //  auth().setPersistence(auth.Auth.Persistence.LOCAL)
+          //  auth().setPersistence(auth.Auth.Persistence.LOCAL)
           this.$router.replace('dash')
         }
       } catch (error) {
@@ -134,7 +134,6 @@ export default {
           position: 'is-bottom',
           type: 'is-danger'
         })
-       
         this.loading = false
       }
     }

@@ -127,8 +127,7 @@ export default {
     trashObjectArticle () {
       if (this.trashObject) {
         return this.articles.filter(art => art.idCat === this.trashObject.id)
-      }
-      else {
+      } else {
         return []
       }
     }
@@ -142,7 +141,7 @@ export default {
           this.categories = []
         }
       })
-       db.ref('articles').on('value', (snap) => {
+      db.ref('articles').on('value', (snap) => {
         if (snap.val()) {
           this.articles = Object.values(snap.val())
         } else {
@@ -164,11 +163,11 @@ export default {
     trashCancel () {
       this.isModalActive = false
     },
-    trashModalModif (data) {  
+    trashModalModif (data) {
       this.valModification = data
       this.isComponentModalActive = true
     },
-     trashmodalmodifclose () {
+    trashmodalmodifclose () {
       this.isComponentModalActive = false
     }
   },

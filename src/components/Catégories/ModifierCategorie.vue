@@ -86,10 +86,10 @@ export default {
     isActive (newValue) {
       this.isComponentModalActive = newValue
       this.newCat={
-      libelle : this.modif.libelle,
-      imgcat : this.modif.image
-    }
-  },
+        libelle : this.modif.libelle,
+        imgcat : this.modif.image
+      }
+    },
     isComponentModalActive (newValue) {
       if (!newValue) {
         this.annuler()
@@ -97,12 +97,10 @@ export default {
     },
     valModif (val) {
       this.modif = val
-    this.newCat={
-      libelle : this.modif.libelle,
-      imgcat : this.modif.image
-    }
-      
-     
+      this.newCat = {
+        libelle: this.modif.libelle,
+        imgcat: this.modif.image
+      }
     }
   }
 }

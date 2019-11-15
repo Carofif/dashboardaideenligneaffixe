@@ -186,7 +186,7 @@ export default {
             nomcat:  this.$categories.libelle
         }
        this.$compteur++
-       }
+      }
     }
   },
   mounted () {
