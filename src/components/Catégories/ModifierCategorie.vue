@@ -68,16 +68,12 @@ export default {
             type: 'is-success',
             position: 'is-bottom'
 
-           });
-           
-       }
-       else
-       {
-         this.$buefy.toast.open({
-            message: 'veuillez renseigner le nom de la categorie ou selectionner une image',
-            type: 'is-danger',
-            position: 'is-bottom'
-
+        })
+      } else {
+        this.$buefy.toast.open({
+          message: 'veuillez renseigner le nom de la categorie ou selectionner une image',
+          type: 'is-danger',
+          position: 'is-bottom'
         })
       }
     }
