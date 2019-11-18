@@ -38,7 +38,6 @@
 <script>
 import TitleBar from '@/components/TitleBar'
 import HeroBar from '@/components/HeroBar'
-import { db, auth } from '@/plugins/firebase'
 import FilePicker from '@/components/FilePicker'
 export default {
   name: 'AjoutUser',
