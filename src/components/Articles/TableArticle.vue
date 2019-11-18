@@ -95,7 +95,7 @@ import ModifierArticle from '@/components/Articles/ModifierArticle'
 import SupprArticle from '@/components/Articles/SupprArticle'
 export default {
   name: 'TableArticle',
-  components: { HeroBar, TitleBar, AjoutArticle, ModifierArticle , SupprArticle },
+  components: { HeroBar, TitleBar, AjoutArticle, ModifierArticle, SupprArticle },
   props: {
     checkable: {
       type: Boolean,
@@ -126,10 +126,9 @@ export default {
     trashObjectName () {
       if (this.trashObject) {
         return this.trashObject
-      }
-      else {
+      } else {
         return {}
-      } 
+      }
     }
   },
   methods: {
@@ -166,24 +165,24 @@ export default {
   },
   watch: {
     articles (newValue) {
-      this.isLoading=false
+      this.isLoading = false
       this.articles = newValue
-       this.$compteur = 0
-       while ( this.$compteur <=  this.articles.length-1) { 
-       db.ref('categories/' + this.articles[this.$compteur].idCat).once('value', (snap) => {
+      this.$compteur = 0
+      while (this.$compteur <= this.articles.length - 1) {
+        db.ref('categories/' + this.articles[this.$compteur].idCat).once('value', (snap) => {
           if (snap.val()) {
             this.$categories = snap.val()
           } else {
             this.$categories = {}
           }
         })
-        this.articles[this.$compteur]={
-            content:  this.articles[this.$compteur].content,
-            date:  this.articles[this.$compteur].date,
-            id:  this.articles[this.$compteur].id,
-            idCat:  this.articles[this.$compteur].idCat,
-            titre:  this.articles[this.$compteur].titre,
-            nomcat:  this.$categories.libelle
+        this.articles[this.$compteur] = {
+          content: this.articles[this.$compteur].content,
+          date: this.articles[this.$compteur].date,
+          id: this.articles[this.$compteur].id,
+          idCat: this.articles[this.$compteur].idCat,
+          titre: this.articles[this.$compteur].titre,
+          nomcat: this.$categories.libelle
         }
         this.$compteur++
       }

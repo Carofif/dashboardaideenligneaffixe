@@ -32,54 +32,47 @@
 </template>
 
 <script>
+import { db } from '@/plugins/firebase'
 export default {
   props: ['isActive', 'valModif'],
   data () {
     return {
       isComponentModalActive: false,
-     newCat: {},
+      newCat: {},
       modif: {}
     }
   },
   methods: {
     annuler () {
-     
       this.$emit('cancel')
     },
     confirmer () {
       this.$emit('confirmer')
     },
     imageAdd (e) {
-      const imge = e;
-      const reader = new FileReader();
-      reader.readAsDataURL(imge);
-      reader.onload = e =>{
-          this.newCat.imgcat = e.target.result;
+      const imge = e
+      const reader = new FileReader()
+      reader.readAsDataURL(imge)
+      reader.onload = e => {
+        this.newCat.imgcat = e.target.result
       }
     },
     modifierCat () {
-      if(this.modif.libelle.length )
-       {
-         this.modif=this.newCat
-           db.ref('categories').child(this.modif.id).update({libelle: this.modif.libelle, image: this.modif.image }) ;   
-
-             this.$buefy.toast.open({
-            message: 'Modification de Categorie confirmé',
-            type: 'is-success',
-            position: 'is-bottom'
-
-           });
-           
-       }
-       else
-       {
-         this.$buefy.toast.open({
-            message: 'veuillez renseigner le nom de la categorie ou selectionner une image',
-            type: 'is-danger',
-            position: 'is-bottom'
-
-           })
-       }
+      if (this.modif.libelle.length) {
+        this.modif = this.newCat
+        db.ref('categories').child(this.modif.id).update({ libelle: this.modif.libelle, image: this.modif.image })
+        this.$buefy.toast.open({
+          message: 'Modification de Categorie confirmé',
+          type: 'is-success',
+          position: 'is-bottom'
+        })
+      } else {
+        this.$buefy.toast.open({
+          message: 'veuillez renseigner le nom de la categorie ou selectionner une image',
+          type: 'is-danger',
+          position: 'is-bottom'
+        })
+      }
     }
   },
   watch: {
