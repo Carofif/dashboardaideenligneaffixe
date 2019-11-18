@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Dash from './views/dash/index.vue'
 import Home from './views/dash/Home.vue'
 import Connexion from './views/Connexion.vue'
+import firebase from 'firebase'
 
 Vue.use(Router)
 
@@ -17,33 +18,41 @@ const router = new Router({
       path: '/',
       name: 'dash',
       component: Dash,
+      meta: {
+        requiresAuth: true
+      },
       redirect: 'dash/home',
       children: [
         {
           path: '/dash/home',
           name: 'home',
           component: Home
+        },
+        {
+          path: '/tablearticle',
+          name: 'tablearticle',
+          component: () => import(/* webpackChunkName: "tablearticle" */ './components/Articles/TableArticle.vue')
+        },
+        {
+          path: '/tablecategorie',
+          name: 'tablecategorie',
+          component: () => import(/* webpackChunkName: "tablecategorie" */ './components/Catégories/TablesCategories.vue')
+        },
+        {
+          path: '/profile',
+          name: 'profile',
+          component: () => import(/* webpackChunkName: "profile" */ './views/Profile.vue')
+        },
+        {
+          path: '/register',
+          name: 'register',
+          component: () => import(/* webpackChunkName: "register" */ './components/User/Register.vue')
         }
       ]
     },
     {
-      path: '/profile',
-      name: 'profile',
-      component: () => import(/* webpackChunkName: "profile" */ './views/Profile.vue')
-    },
-    {
-      path: '/tablearticle',
-      name: 'tablearticle',
-      component: () => import(/* webpackChunkName: "tablearticle" */ './components/Articles/TableArticle.vue')
-    },
-    {
-      path: '/tablecategorie',
-      name: 'tablecategorie',
-      component: () => import(/* webpackChunkName: "tablecategorie" */ './components/Catégories/TablesCategories.vue')
-    },
-    {
       path: '/connexion',
-      name: 'Connexion',
+      name: 'connexion',
       component: Connexion
     }
   ],
@@ -56,4 +65,12 @@ const router = new Router({
   }
 })
 
+router.beforeEach((to, from, next) => {
+  console.log('ok')
+  const currentUser = firebase.auth().currentUser
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+  if (requiresAuth && !currentUser) next('Connexion')
+  else if (!requiresAuth && currentUser) next('dash')
+  else next()
+})
 export default router

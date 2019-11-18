@@ -26,13 +26,12 @@
             </header>
             <div class="card-content">
                  <div>
-            <modal-box :is-active="isModalActive" :trash-object-name="trashObjectName" @confirm="trashConfirm"
-                    @cancel="trashCancel"/>
-            <modifier-categorie :is-active="isComponentModalActive" :val-modif="valModification"/>
+            <modal-box :is-active="isModalActive" :trash-object-name="trashObjectName" :trash-object-article="trashObjectArticle"
+                    @confirm="trashConfirm" @annuler="trashCancel"/>
+            <modifier-categorie :is-active="isComponentModalActive" :val-modif="valModification"
+                    @cancel="trashmodalmodifclose"/>
             <b-table
             :checked-rows.sync="checkedRows"
-            :checkable="checkable"
-            :loading="isLoading"
             :paginated="paginated"
             :per-page="perPage"
             :striped="true"
@@ -40,21 +39,21 @@
             default-sort="name"
             :data="categories">
 
-            <template slot-scope="props">
+            <template slot-scope="Lcategorie">
                 <b-table-column class="has-no-head-mobile is-image-cell">
                 <div class="image">
-                    <img :src="props.row.image" class="image is-96x96">
+                    <img :src="Lcategorie.row.image" class="image is-96x96">
                 </div>
                 </b-table-column>
                 <b-table-column label="Nom de la Catégorie" field="libelle" sortable>
-                {{ props.row.libelle }}
+                {{ Lcategorie.row.libelle }}
                 </b-table-column>
                 <b-table-column label="Actions" custom-key="actions" class="is-actions-cell">
                 <div class="buttons">
-                    <button class="button is-small is-info" type="button" @click="trashModalModif(props.row)">
+                    <button class="button is-small is-info" type="button" @click="trashModalModif(Lcategorie.row)">
                     <b-icon icon="account-edit" size="is-small"/>
                     </button>
-                    <button class="button is-small is-danger" type="button" @click.prevent="trashModal(props.row)">
+                    <button class="button is-small is-danger" type="button" @click="trashModal(Lcategorie.row)">
                     <b-icon icon="trash-can" size="is-small"/>
                     </button>
                 </div>
@@ -67,7 +66,7 @@
                     <p>
                     <b-icon icon="dots-horizontal" size="is-large"/>
                     </p>
-                    <p>Récupération des données...</p>
+                    <p>Récupération des données...&hellip;</p>
                 </template>
                 <template v-else>
                     <p>
@@ -96,20 +95,14 @@ import ModifierCategorie from '@/components/Catégories/ModifierCategorie'
 export default {
   name: 'TableCategorie',
   components: { HeroBar, TitleBar, ModalBox, AjoutCategorie, ModifierCategorie },
-  props: {
-    checkable: {
-      type: Boolean,
-      default: false
-    }
-  },
   data () {
     return {
       isComponentModalActive: false,
-      trashObjectModif: null,
       isModalActive: false,
       trashObject: null,
       categories: [],
-      isLoading: false,
+      articles: [],
+      isLoading: true,
       paginated: false,
       perPage: 10,
       checkedRows: [],
@@ -125,21 +118,21 @@ export default {
     },
     trashObjectName () {
       if (this.trashObject) {
-        return this.trashObject.name
+        return this.trashObject
+      } else {
+        return {}
       }
-
-      return null
     },
-    trashObjectNameModif () {
-      if (this.trashObjectModif) {
-        return this.trashObjectModif.name
+    trashObjectArticle () {
+      if (this.trashObject) {
+        return this.articles.filter(art => art.idCat === this.trashObject.id)
+      } else {
+        return []
       }
-
-      return null
     }
   },
   methods: {
-    getCategories () {
+    getCategoriesAndArticles () {
       db.ref('categories').on('value', (snap) => {
         if (snap.val()) {
           this.categories = Object.values(snap.val())
@@ -147,9 +140,16 @@ export default {
           this.categories = []
         }
       })
+      db.ref('articles').on('value', (snap) => {
+        if (snap.val()) {
+          this.articles = Object.values(snap.val())
+        } else {
+          this.articles = []
+        }
+      })
     },
-    trashModal (trashObject) {
-      this.trashObject = trashObject
+    trashModal (data) {
+      this.trashObject = data
       this.isModalActive = true
     },
     trashConfirm () {
@@ -165,13 +165,17 @@ export default {
     trashModalModif (data) {
       this.valModification = data
       this.isComponentModalActive = true
+    },
+    trashmodalmodifclose () {
+      this.isComponentModalActive = false
     }
   },
   mounted () {
-    this.getCategories()
+    this.getCategoriesAndArticles()
   },
   destroyed () {
     db.ref('categories/').off()
+    db.ref('articles/').off()
   }
 }
 </script>

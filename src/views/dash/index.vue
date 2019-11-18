@@ -11,6 +11,7 @@
 import NavBar from '@/components/NavBar'
 import AsideMenu from '@/components/AsideMenu'
 import FooterBar from '@/components/FooterBar'
+import firebase from 'firebase'
 
 export default {
   name: 'home',
@@ -37,11 +38,6 @@ export default {
         '',
         [
           {
-            to: '/profile',
-            label: 'Profile',
-            icon: 'account-circle'
-          },
-          {
             to: '/tablecategorie',
             label: 'Catégories',
             icon: 'shape-outline'
@@ -50,6 +46,16 @@ export default {
             to: '/tablearticle',
             label: 'Articles',
             icon: 'newspaper-variant-multiple-outline'
+          },
+          {
+            to: '/profile',
+            label: 'Profile',
+            icon: 'account-circle'
+          },
+          {
+            to: '/register',
+            label: 'Register',
+            icon: 'account-plus-outline'
           }
         ]
       ]
@@ -58,7 +64,7 @@ export default {
   created () {
     this.$store.commit('user', {
       name: 'John Doe',
-      email: 'john@example.com',
+      email: firebase.auth().currentUser.email,
       avatar: '/data-sources/avatars/annie-spratt-121576-unsplash.jpg'
     })
   }

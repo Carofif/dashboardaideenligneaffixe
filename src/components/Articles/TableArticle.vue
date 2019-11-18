@@ -26,13 +26,13 @@
             </header>
             <div class="card-content">
                  <div>
-            <modal-box :is-active="isModalActive" :trash-object-name="trashObjectName" @confirm="trashConfirm"
-                    @cancel="trashCancel"/>
-            <modifier-article :is-active="isComponentModalActive" :val-modif="valModification"/>
+            <suppr-article :is-active="isModalActive" :trash-object-name="trashObjectName" @confirm="trashConfirm"
+                    @annuler="trashCancel"/>
+            <modifier-article :is-active="isComponentModalActive" :val-modif="valModification"
+                    @cancel="trashmodalmodifclose"/>
             <b-table
             :checked-rows.sync="checkedRows"
             :checkable="checkable"
-            :loading="isLoading"
             :paginated="paginated"
             :per-page="perPage"
             :striped="true"
@@ -48,14 +48,14 @@
                 {{ props.row.date }}
                 </b-table-column>
                 <b-table-column label="Type Catégorie" field="typeCategorie" sortable>
-                {{ props.row.idCat }}
+                {{ props.row.nomcat }}
                 </b-table-column>
                 <b-table-column label="Actions" custom-key="actions" class="is-actions-cell">
                 <div class="buttons">
                     <button class="button is-small is-info" type="button" @click="trashModalModif(props.row)">
                     <b-icon icon="account-edit" size="is-small"/>
                     </button>
-                    <button class="button is-small is-danger" type="button" @click.prevent="trashModal(props.row)">
+                    <button class="button is-small is-danger" type="button" @click="trashModal(props.row)">
                     <b-icon icon="trash-can" size="is-small"/>
                     </button>
                 </div>
@@ -84,19 +84,18 @@
         </div>
     </section>
   </div>
-
 </template>
 
 <script>
 import TitleBar from '@/components/TitleBar'
 import HeroBar from '@/components/HeroBar'
-import ModalBox from '@/components/ModalBox'
 import { db } from '@/plugins/firebase'
 import AjoutArticle from '@/components/Articles/AjoutArticle'
 import ModifierArticle from '@/components/Articles/ModifierArticle'
+import SupprArticle from '@/components/Articles/SupprArticle'
 export default {
   name: 'TableArticle',
-  components: { HeroBar, TitleBar, ModalBox, AjoutArticle, ModifierArticle },
+  components: { HeroBar, TitleBar, AjoutArticle, ModifierArticle, SupprArticle },
   props: {
     checkable: {
       type: Boolean,
@@ -110,7 +109,7 @@ export default {
       isModalActive: false,
       trashObject: null,
       articles: [],
-      isLoading: false,
+      isLoading: true,
       paginated: false,
       perPage: 10,
       checkedRows: [],
@@ -126,17 +125,10 @@ export default {
     },
     trashObjectName () {
       if (this.trashObject) {
-        return this.trashObject.name
+        return this.trashObject
+      } else {
+        return {}
       }
-
-      return null
-    },
-    trashObjectNameModif () {
-      if (this.trashObjectModif) {
-        return this.trashObjectModif.name
-      }
-
-      return null
     }
   },
   methods: {
@@ -166,6 +158,34 @@ export default {
     trashModalModif (data) {
       this.valModification = data
       this.isComponentModalActive = true
+    },
+    trashmodalmodifclose () {
+      this.isComponentModalActive = false
+    }
+  },
+  watch: {
+    articles (newValue) {
+      this.isLoading = false
+      this.articles = newValue
+      this.$compteur = 0
+      while (this.$compteur <= this.articles.length - 1) {
+        db.ref('categories/' + this.articles[this.$compteur].idCat).once('value', (snap) => {
+          if (snap.val()) {
+            this.$categories = snap.val()
+          } else {
+            this.$categories = {}
+          }
+        })
+        this.articles[this.$compteur] = {
+          content: this.articles[this.$compteur].content,
+          date: this.articles[this.$compteur].date,
+          id: this.articles[this.$compteur].id,
+          idCat: this.articles[this.$compteur].idCat,
+          titre: this.articles[this.$compteur].titre,
+          nomcat: this.$categories.libelle
+        }
+        this.$compteur++
+      }
     }
   },
   mounted () {

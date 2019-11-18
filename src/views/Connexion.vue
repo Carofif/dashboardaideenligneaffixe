@@ -6,7 +6,7 @@
           <div class="container">
             <div class="navbar-brand">
               <a class="navbar-item has-text-white">
-                <b>Tableau de Bord</b>  Aide en ligne Affixe
+                <b>Tableau de Bord </b>  Aide en ligne Affixe
               </a>
             </div>
           </div>
@@ -52,7 +52,14 @@
                     <b-button :loading="loading" type="is-link" @click="login">Connexion</b-button>
                   </div>
                 </div>
-
+                <div class="field mt-10">
+                  <b-checkbox v-model="checkboxCustom"
+                    type="is-info"
+                    true-value="Rester connecté"
+                    false-value="Ne pas rester connecté">
+                    {{ checkboxCustom }}
+                  </b-checkbox>
+                </div>
               </div>
             </div>
           </div>
@@ -86,7 +93,8 @@ export default {
         type: '',
         msg: ''
       },
-      loading: false
+      loading: false,
+      checkboxCustom: 'Rester connecté'
     }
   },
   methods: {
@@ -121,7 +129,7 @@ export default {
       } catch (error) {
         this.$buefy.toast.open({
           duration: 5000,
-          message: error,
+          message: "Une erreur s'est produite, veuillez renseigner l'email et le mot de passe encore une fois",
           position: 'is-bottom',
           type: 'is-danger'
         })
