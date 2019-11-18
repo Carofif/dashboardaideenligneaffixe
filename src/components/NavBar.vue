@@ -117,15 +117,9 @@ export default {
       this.isMenuNavBarActive = (!this.isMenuNavBarActive)
     },
     deconnexion () {
-      this.$buefy.snackbar.open({
-        message: 'Déconnexion cliqué',
-        queue: false
+      auth.signOut().then(() => {
+        this.$router.replace('connexion')
       })
-      if (auth.currentUser) {
-        auth.signOut().then(() => {
-          this.$router.replace('connexion')
-        })
-      }
     }
   }
 }

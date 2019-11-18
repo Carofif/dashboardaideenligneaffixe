@@ -50,24 +50,22 @@ export default {
       this.$emit('confirmer')
     },
     imageAdd (e) {
-      const imge = e;
-      const reader = new FileReader();
-      reader.readAsDataURL(imge);
+      const imge = e
+      const reader = new FileReader()
+      reader.readAsDataURL(imge)
       reader.onload = e =>{
-          this.newCat.imgcat = e.target.result;
+          this.newCat.imgcat = e.target.result
       }
     },
     modifierCat () {
       if(this.modif.libelle.length )
        {
          this.modif=this.newCat
-           db.ref('categories').child(this.modif.id).update({libelle: this.modif.libelle, image: this.modif.image }) ;   
-
-             this.$buefy.toast.open({
-            message: 'Modification de Categorie confirmé',
-            type: 'is-success',
-            position: 'is-bottom'
-
+         db.ref('categories').child(this.modif.id).update({libelle: this.modif.libelle, image: this.modif.image })  
+         this.$buefy.toast.open({
+           message: 'Modification de Categorie confirmé',
+           type: 'is-success',
+           position: 'is-bottom'
         })
       } else {
         this.$buefy.toast.open({
