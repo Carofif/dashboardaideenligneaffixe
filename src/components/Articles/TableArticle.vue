@@ -185,8 +185,8 @@ export default {
             titre:  this.articles[this.$compteur].titre,
             nomcat:  this.$categories.libelle
         }
-       this.$compteur++
-       }
+        this.$compteur++
+      }
     }
   },
   mounted () {

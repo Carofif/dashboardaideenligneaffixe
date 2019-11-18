@@ -65,23 +65,21 @@ export default {
     modifierArt () {
       if (this.modif.titre.length && this.modif.content.length) {
         this.modif = this.newArt
-           db.ref('articles').child(this.modif.id).update({ content: this.modif.content, idCat: this.modif.idCat, titre: this.modif.titre })
-            this.$buefy.toast.open({
-            message: 'Modification confirmé',
-            type: 'is-success',
-            position: 'is-bottom'
-           }); 
-      }
-      else {
+        db.ref('articles').child(this.modif.id).update({ content: this.modif.content, idCat: this.modif.idCat, titre: this.modif.titre })
+        this.$buefy.toast.open({
+          message: 'Modification confirmé',
+          type: 'is-success',
+          position: 'is-bottom'
+        })
+      } else {
         this.$buefy.toast.open({
           message: 'veuillez renseigner tous les champs',
           type: 'is-danger',
           position: 'is-bottom'
         })
       }
-    },
+    }
   },
-  
   watch: {
     isActive (newValue) {
       this.isComponentModalActive = newValue
@@ -93,7 +91,7 @@ export default {
     },
     valModif (val) {
       this.modif = val
-      this.newArt=val
+      this.newArt = val
     }
   },
   mounted () {

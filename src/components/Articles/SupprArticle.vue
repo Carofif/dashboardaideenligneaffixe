@@ -29,7 +29,7 @@ export default {
     },
     trashObjectName: {
       type: Object,
-      default: {}
+      default: function () { return {} }
     }
   },
   data () {
@@ -42,14 +42,14 @@ export default {
       this.$emit('annuler')
     },
     confirmer () {
-         if(this.trashObjectName.titre) {
-         db.ref('articles').child(this.trashObjectName.id).remove() ; 
-         this.$buefy.toast.open({
-            message: 'Suppression confirmée',
-            type: 'is-success',
-            position: 'is-bottom'
+      if (this.trashObjectName.titre) {
+        db.ref('articles').child(this.trashObjectName.id).remove()
+        this.$buefy.toast.open({
+          message: 'Suppression confirmée',
+          type: 'is-success',
+          position: 'is-bottom'
         })
-       }
+      }
       this.$emit('confirm')
     }
   },
