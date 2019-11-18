@@ -124,7 +124,6 @@ export default {
           this.loading = true
           await auth.signInWithEmailAndPassword(this.email.value, this.password.value)
           this.loading = false
-          //  auth().setPersistence(auth.Auth.Persistence.LOCAL)
           this.$router.replace('dash')
         }
       } catch (error) {

@@ -117,9 +117,8 @@ export default {
       this.isMenuNavBarActive = (!this.isMenuNavBarActive)
     },
     deconnexion () {
-      auth.signOut().then(() => {
-        this.$router.replace('connexion')
-      })
+      auth.signOut()
+      this.$router.go(this.$router.currentRoute)
     }
   }
 }
