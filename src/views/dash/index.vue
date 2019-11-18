@@ -11,6 +11,7 @@
 import NavBar from '@/components/NavBar'
 import AsideMenu from '@/components/AsideMenu'
 import FooterBar from '@/components/FooterBar'
+import firebase from 'firebase'
 
 export default {
   name: 'home',
@@ -58,7 +59,7 @@ export default {
   created () {
     this.$store.commit('user', {
       name: 'John Doe',
-      email: 'john@example.com',
+      email: firebase.auth().currentUser.email,
       avatar: '/data-sources/avatars/annie-spratt-121576-unsplash.jpg'
     })
   }

@@ -83,9 +83,7 @@
 import { mapState } from 'vuex'
 import NavBarMenu from '@/components/NavBarMenu'
 import UserAvatar from '@/components/UserAvatar'
-import { auth } from '@/plugins/firebase'
 import firebase from 'firebase'
-import Router from 'vue-router'
 
 export default {
   name: 'NavBar',
@@ -119,18 +117,12 @@ export default {
       this.isMenuNavBarActive = (!this.isMenuNavBarActive)
     },
     deconnexion () {
-     
-     
       this.$buefy.snackbar.open({
         message: 'Déconnexion cliqué',
         queue: false
       })
-      if(auth.currentUser)
-      {
-        auth.signOut().then(() => {
-          this.$router.replace('connexion')
-         })
-      }
+      firebase.auth().signOut()
+      this.$router.go(this.$router.currentRoute)
     }
   }
 }
