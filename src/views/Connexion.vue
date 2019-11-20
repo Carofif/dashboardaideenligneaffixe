@@ -52,14 +52,6 @@
                     <b-button :loading="loading" type="is-link" @click="login">Connexion</b-button>
                   </div>
                 </div>
-                <div class="field mt-10">
-                  <b-checkbox v-model="checkboxCustom"
-                    type="is-info"
-                    true-value="Rester connecté"
-                    false-value="Ne pas rester connecté">
-                    {{ checkboxCustom }}
-                  </b-checkbox>
-                </div>
               </div>
             </div>
           </div>
@@ -93,8 +85,7 @@ export default {
         type: '',
         msg: ''
       },
-      loading: false,
-      checkboxCustom: 'Rester connecté'
+      loading: false
     }
   },
   methods: {
