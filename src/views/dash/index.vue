@@ -38,11 +38,6 @@ export default {
         '',
         [
           {
-            to: '/profile',
-            label: 'Profile',
-            icon: 'account-circle'
-          },
-          {
             to: '/tablecategorie',
             label: 'Catégories',
             icon: 'shape-outline'
@@ -51,6 +46,16 @@ export default {
             to: '/tablearticle',
             label: 'Articles',
             icon: 'newspaper-variant-multiple-outline'
+          },
+          {
+            to: '/profile',
+            label: 'Profile',
+            icon: 'account-circle'
+          },
+          {
+            to: '/register',
+            label: 'Register',
+            icon: 'account-plus-outline'
           }
         ]
       ]

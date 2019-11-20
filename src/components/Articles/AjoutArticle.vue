@@ -25,8 +25,8 @@
                         </b-field>
                   </section>
                   <footer class="modal-card-foot">
-                    <button class="button" type="button">Fermer</button>
-                    <button class="button is-info">Valider</button>
+                    <button class="button" type="button" @click="annuler">Fermer</button>
+                    <button class="button is-info" @click="addArticle">Valider</button>
                   </footer>
               </div>
         </b-modal>
@@ -36,13 +36,15 @@
 <script>
 import { db } from '@/plugins/firebase'
 import { VueEditor } from 'vue2-editor'
+import moment from 'moment'
+
 export default {
   data () {
     return {
       isComponentModalActive: false,
       content: '',
       titreArticle: '',
-      catSelect: {},
+      catSelect: '',
       categories: []
     }
   },
@@ -58,6 +60,35 @@ export default {
           this.categories = []
         }
       })
+    },
+    addArticle () {
+      const id = db.ref('articles').push({ titre: this.titreArticle, content: this.content, idCat: this.catSelect, date: moment().format('lll') }).key
+      db.ref('articles').child(id).update({ id: id })
+      this.content = ''
+      this.titreArticle = ''
+      this.catSelect = ''
+      this.$buefy.toast.open({
+        message: 'Article enregistre',
+        type: 'is-success',
+        position: 'is-bottom'
+      })
+    },
+    annuler () {
+      this.$emit('cancel')
+    }
+  },
+  watch: {
+    isActive (newValue) {
+      this.isComponentModalActive = newValue
+      this.newCat = {
+        libelle: this.modif.libelle,
+        imgcat: this.modif.image
+      }
+    },
+    isComponentModalActive (newValue) {
+      if (!newValue) {
+        this.annuler()
+      }
     }
   },
   mounted () {

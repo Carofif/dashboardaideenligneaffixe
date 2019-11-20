@@ -29,11 +29,6 @@ const router = new Router({
           component: Home
         },
         {
-          path: '/profile',
-          name: 'profile',
-          component: () => import(/* webpackChunkName: "profile" */ './views/Profile.vue')
-        },
-        {
           path: '/tablearticle',
           name: 'tablearticle',
           component: () => import(/* webpackChunkName: "tablearticle" */ './components/Articles/TableArticle.vue')
@@ -42,12 +37,22 @@ const router = new Router({
           path: '/tablecategorie',
           name: 'tablecategorie',
           component: () => import(/* webpackChunkName: "tablecategorie" */ './components/Catégories/TablesCategories.vue')
+        },
+        {
+          path: '/profile',
+          name: 'profile',
+          component: () => import(/* webpackChunkName: "profile" */ './views/Profile.vue')
+        },
+        {
+          path: '/register',
+          name: 'register',
+          component: () => import(/* webpackChunkName: "register" */ './components/User/Register.vue')
         }
       ]
     },
     {
       path: '/connexion',
-      name: 'Connexion',
+      name: 'connexion',
       component: Connexion
     }
   ],
