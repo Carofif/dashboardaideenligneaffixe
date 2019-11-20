@@ -19,7 +19,7 @@
                   </div>
                   <div class="level-right">
                       <div class="level-item">
-                        <ajout-article></ajout-article>
+                        <ajout-article @catList="getCategorie"></ajout-article>
                       </div>
                   </div>
               </div>
@@ -113,8 +113,12 @@ export default {
       paginated: false,
       perPage: 10,
       checkedRows: [],
-      valModification: {}
+      valModification: {},
+      categories: []
     }
+  },
+  firebase: {
+    categories: db.ref('categories')
   },
   computed: {
     titleStack () {
@@ -134,6 +138,7 @@ export default {
   methods: {
     getArticles () {
       db.ref('articles').on('value', (snap) => {
+        console.log("at")
         if (snap.val()) {
           this.articles = Object.values(snap.val())
         } else {
@@ -141,6 +146,10 @@ export default {
         }
       })
     },
+    getCategorie (id) {
+      return this.categories ? ' ' : this.categories.find(cat => cat.id === id).libelle
+    },
+
     trashModal (trashObject) {
       this.trashObject = trashObject
       this.isModalActive = true
@@ -190,6 +199,7 @@ export default {
   },
   mounted () {
     this.getArticles()
+    console.log(this.categories)
   },
   destroyed () {
     db.ref('articles/').off()

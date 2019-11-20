@@ -8,7 +8,7 @@
                    </header>
                   <section class="modal-card-body">
                     <b-field class="file">
-                      <b-upload v-model="image">
+                      <b-upload v-model="image" @input="saveImageUrl">
                         <a class="button is-info">
                           <b-icon icon="upload"></b-icon>
                           <span>Cliquer pour ajouter l'image de la catégorie</span>
@@ -25,7 +25,7 @@
                   </section>
                   <footer class="modal-card-foot">
                     <button class="button" type="button">Fermer</button>
-                    <button class="button is-info">Valider</button>
+                    <button class="button is-info" @click="addCategorie">Valider</button>
                   </footer>
               </div>
         </b-modal>
@@ -33,13 +33,43 @@
 </template>
 
 <script>
+import { db } from '@/plugins/firebase'
 export default {
   data () {
     return {
       isComponentModalActive: false,
       image: null,
-      newCategorie: ''
+      newCategorie: '',
+      categorieImageUrl: null
     }
+  },
+  methods: {
+     saveImageUrl (e) {
+     const imge = e;
+     const reader = new FileReader();
+     reader.readAsDataURL(imge);
+     reader.onload = e =>{
+       this.categorieImageUrl = e.target.result;
+     };},
+     addCategorie () {
+      if(this.newCategorie.length){
+        const id = db.ref('categories').push({libelle: this.newCategorie, image: this.categorieImageUrl}).key
+        db.ref('categories').child(id).update({id: id})
+        this.newCategorie = ''
+        this.$buefy.toast.open({
+          message: 'Categorie enregistre',
+          type: 'is-success',
+          position: 'is-bottom'
+        })
+      } else {
+        this.$buefy.toast.open({
+          message: 'Champ vide',
+          type: 'is-danger',
+          position: 'is-bottom'
+        })
+      }
+    
+   }
   }
 }
 </script>
