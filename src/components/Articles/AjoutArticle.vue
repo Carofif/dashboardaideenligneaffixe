@@ -25,7 +25,7 @@
                         </b-field>
                   </section>
                   <footer class="modal-card-foot">
-                    <button class="button" type="button">Fermer</button>
+                    <button class="button" type="button" @click="annuler">Fermer</button>
                     <button class="button is-info" @click="addArticle">Valider</button>
                   </footer>
               </div>
@@ -72,6 +72,23 @@ export default {
         type: 'is-success',
         position: 'is-bottom'
       })
+    },
+    annuler () {
+      this.$emit('cancel')
+    }
+  },
+  watch: {
+    isActive (newValue) {
+      this.isComponentModalActive = newValue
+      this.newCat = {
+        libelle: this.modif.libelle,
+        imgcat: this.modif.image
+      }
+    },
+    isComponentModalActive (newValue) {
+      if (!newValue) {
+        this.annuler()
+      }
     }
   },
   mounted () {

@@ -24,7 +24,7 @@
                     </b-field>
                   </section>
                   <footer class="modal-card-foot">
-                    <button class="button" type="button">Fermer</button>
+                    <button class="button" type="button" @click="annuler">Fermer</button>
                     <button class="button is-info" @click="addCategorie">Valider</button>
                   </footer>
               </div>
@@ -44,17 +44,18 @@ export default {
     }
   },
   methods: {
-     saveImageUrl (e) {
-     const imge = e;
-     const reader = new FileReader();
-     reader.readAsDataURL(imge);
-     reader.onload = e =>{
-       this.categorieImageUrl = e.target.result;
-     };},
-     addCategorie () {
-      if(this.newCategorie.length){
-        const id = db.ref('categories').push({libelle: this.newCategorie, image: this.categorieImageUrl}).key
-        db.ref('categories').child(id).update({id: id})
+    saveImageUrl (e) {
+      const imge = e
+      const reader = new FileReader()
+      reader.readAsDataURL(imge)
+      reader.onload = e => {
+        this.categorieImageUrl = e.target.result
+      }
+    },
+    addCategorie () {
+      if (this.newCategorie.length) {
+        const id = db.ref('categories').push({ libelle: this.newCategorie, image: this.categorieImageUrl }).key
+        db.ref('categories').child(id).update({ id: id })
         this.newCategorie = ''
         this.$buefy.toast.open({
           message: 'Categorie enregistre',
@@ -68,8 +69,24 @@ export default {
           position: 'is-bottom'
         })
       }
-    
-   }
+    },
+    annuler () {
+      this.$emit('cancel')
+    }
+  },
+  watch: {
+    isActive (newValue) {
+      this.isComponentModalActive = newValue
+      this.newCat = {
+        libelle: this.modif.libelle,
+        imgcat: this.modif.image
+      }
+    },
+    isComponentModalActive (newValue) {
+      if (!newValue) {
+        this.annuler()
+      }
+    }
   }
 }
 </script>

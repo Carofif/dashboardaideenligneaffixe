@@ -2,7 +2,12 @@
   <card-component title="Editer le profil" icon="account-circle">
     <form @submit.prevent="submit">
       <b-field horizontal label="Avatar">
-        <file-picker/>
+        <b-upload @input="imageAdd">
+          <a class="button is-info">
+            <b-icon icon="upload"></b-icon>
+            <span>avatar</span>
+          </a>
+        </b-upload>
       </b-field>
       <hr>
       <b-field horizontal label="Nom" message="Champs obligatoires. Votre nom">
@@ -25,14 +30,12 @@
 
 <script>
 import { mapState } from 'vuex'
-import FilePicker from '@/components/FilePicker'
 import CardComponent from '@/components/CardComponent'
 
 export default {
   name: 'ProfileUpdateForm',
   components: {
-    CardComponent,
-    FilePicker
+    CardComponent
   },
   data () {
     return {
@@ -41,7 +44,8 @@ export default {
       form: {
         name: null,
         email: null
-      }
+      },
+      photoUrl: ''
     }
   },
   computed: {
@@ -65,6 +69,14 @@ export default {
           queue: false
         })
       }, 500)
+    },
+    imageAdd (e) {
+      const imge = e
+      const reader = new FileReader()
+      reader.readAsDataURL(imge)
+      reader.onload = e => {
+        this.photoUrl = e.target.result
+      }
     }
   },
   watch: {

@@ -10,8 +10,13 @@
     <section class="section is-main-section">
         <div class="card-content">
           <section class="modal-card-body">
-            <b-field horizontal label="Avatar">
-              <file-picker/>
+            <b-field class="file">
+              <b-upload @input="imageAdd">
+                <a class="button is-info">
+                  <b-icon icon="upload"></b-icon>
+                  <span>avatar</span>
+                </a>
+              </b-upload>
             </b-field>
             <b-field label="Nom et Prénoms">
               <b-input v-model="name"></b-input>
@@ -38,16 +43,16 @@
 <script>
 import TitleBar from '@/components/TitleBar'
 import HeroBar from '@/components/HeroBar'
-import FilePicker from '@/components/FilePicker'
 export default {
   name: 'AjoutUser',
-  components: { HeroBar, TitleBar, FilePicker },
+  components: { HeroBar, TitleBar },
   data () {
     return {
       name: '',
       email: '',
       password: '',
-      password_confirmation: ''
+      password_confirmation: '',
+      photoUrl: ''
     }
   },
   computed: {
@@ -58,7 +63,16 @@ export default {
       ]
     }
   },
-  methods: {},
+  methods: {
+    imageAdd (e) {
+      const imge = e
+      const reader = new FileReader()
+      reader.readAsDataURL(imge)
+      reader.onload = e => {
+        this.photoUrl = e.target.result
+      }
+    }
+  },
   watch: {},
   mounted () {},
   destroyed () {}
