@@ -48,7 +48,8 @@ export default {
     },
     ...mapState([
       'userName',
-      'userEmail'
+      'userEmail',
+      'userAvatar'
     ])
   }
 }

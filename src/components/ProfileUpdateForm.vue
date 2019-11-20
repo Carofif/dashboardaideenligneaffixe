@@ -1,8 +1,18 @@
 <template>
   <card-component title="Editer le profil" icon="account-circle">
-    <form @submit.prevent="submit">
-      <b-field horizontal label="Avatar">
-        <file-picker/>
+    <form @submit="submit">
+      <figure class="media-left">
+        <p class="image is-64x64">
+          <img :src="form.photo">
+        </p>
+      </figure>
+      <b-field class="file" horizontal label="Avatar">
+        <b-upload @input="imageAdd">
+        <a class="button is-info">
+        <b-icon icon="upload"></b-icon>
+        <span>Cliquer pour ajouter une photo</span>
+        </a>
+        </b-upload>     
       </b-field>
       <hr>
       <b-field horizontal label="Nom" message="Champs obligatoires. Votre nom">
@@ -25,14 +35,13 @@
 
 <script>
 import { mapState } from 'vuex'
-import FilePicker from '@/components/FilePicker'
 import CardComponent from '@/components/CardComponent'
+import firebase from 'firebase'
 
 export default {
   name: 'ProfileUpdateForm',
   components: {
-    CardComponent,
-    FilePicker
+    CardComponent
   },
   data () {
     return {
@@ -40,31 +49,57 @@ export default {
       isLoading: false,
       form: {
         name: null,
-        email: null
+        email: null,
+        photo: null
       }
     }
   },
   computed: {
     ...mapState([
       'userName',
-      'userEmail'
+      'userEmail',
+      'userAvatar'
     ])
   },
   mounted () {
     this.form.name = this.userName
     this.form.email = this.userEmail
+    this.form.photo = this.userAvatar
   },
   methods: {
     submit () {
-      this.isLoading = true
-      setTimeout(() => {
-        this.isLoading = false
+    this.$user = firebase.auth().currentUser;
+    this.$authRef = firebase.auth();
+    this.$authRef.onAuthStateChanged( () => {
+        if (this.$user) {
+            this.$user.updateProfile({
+             displayName: this.form.name,
+             email: this.form.email,
+             photoURL: this.form.photo
+              }).then(function() {
+             
+              }).catch(function(error) {
+               // An error happened.
+});
+        } else {
+            console.log('not login');
+        }
+    });
+        console.log(this.form)
         this.$store.commit('user', this.form)
         this.$buefy.snackbar.open({
           message: 'Mise à jour',
           queue: false
         })
-      }, 500)
+    },
+     imageAdd (e) {
+      const imge = e
+      const reader = new FileReader()
+      reader.readAsDataURL(imge)
+      reader.onload = e => {
+        this.form.photo = e.target.result
+        console.log(this.form.photo)
+      }
     }
   },
   watch: {
@@ -73,6 +108,9 @@ export default {
     },
     userEmail (newValue) {
       this.form.email = newValue
+    },
+    photo (newValue) {
+      this.form.photo = newValue
     }
   }
 }

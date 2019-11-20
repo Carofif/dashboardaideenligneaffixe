@@ -58,10 +58,11 @@ export default {
   },
   created () {
     this.$store.commit('user', {
-      name: 'John Doe',
+      name: firebase.auth().currentUser.displayName,
       email: firebase.auth().currentUser.email,
-      avatar: '/data-sources/avatars/annie-spratt-121576-unsplash.jpg'
+      avatar: firebase.auth().currentUser.photoURL
     })
+   console.log(firebase.auth().currentUser)
   }
 }
 </script>
