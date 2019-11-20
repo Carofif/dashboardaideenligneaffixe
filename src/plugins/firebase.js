@@ -8,7 +8,7 @@ const app = firebase.initializeApp({
   authDomain: 'aide-en-ligne-affixe.firebaseapp.com',
   databaseURL: 'https://aide-en-ligne-affixe.firebaseio.com',
   projectId: 'aide-en-ligne-affixe',
-  storageBucket: '',
+  storageBucket: 'aide-en-ligne-affixe.appspot.com',
   messagingSenderId: '192306049259',
   appId: '1:192306049259:web:fbca040e0d9744ecc38eae'
 })
