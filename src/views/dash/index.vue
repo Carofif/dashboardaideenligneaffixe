@@ -67,7 +67,6 @@ export default {
       email: firebase.auth().currentUser.email,
       avatar: firebase.auth().currentUser.photoURL
     })
-   console.log(firebase.auth().currentUser)
   }
 }
 </script>
