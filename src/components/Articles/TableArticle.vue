@@ -138,7 +138,6 @@ export default {
   methods: {
     getArticles () {
       db.ref('articles').on('value', (snap) => {
-        console.log("at")
         if (snap.val()) {
           this.articles = Object.values(snap.val())
         } else {

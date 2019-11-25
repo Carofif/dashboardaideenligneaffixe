@@ -235,10 +235,7 @@ export default {
       this.password = ''
       this.password_confirmation = ''
     }
-  },
-  watch: {},
-  mounted () {},
-  destroyed () {}
+  }
 }
 </script>
 
