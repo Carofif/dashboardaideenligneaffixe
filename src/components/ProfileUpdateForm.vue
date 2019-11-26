@@ -3,28 +3,28 @@
     <section class="section is-main-section">
       <figure class="media-left">
         <p class="image is-64x64">
-          <img :src="form.photo.url">
+          <img :src="form.photo.url" />
         </p>
       </figure>
       <b-field class="file" horizontal label="Avatar">
         <b-upload @input="imageAdd">
-        <a class="button is-info">
-        <b-icon icon="upload"></b-icon>
-        <span>Cliquer pour ajouter une photo</span>
-        </a>
-        </b-upload>     
+          <a class="button is-info">
+            <b-icon icon="upload"></b-icon>
+            <span>Cliquer pour ajouter une photo</span>
+          </a>
+        </b-upload>
       </b-field>
-      <hr>
+      <hr />
       <b-field horizontal label="Nom" message="Champs obligatoires. Votre nom">
-        <b-input v-model="form.name" name="name" required/>
+        <b-input v-model="form.name" name="name" required />
       </b-field>
-      <b-field horizontal="" label="E-mail" message="Champs obligatoires. Votre e-mail">
-        <b-input v-model="form.email" name="email" type="email" required/>
+      <b-field horizontal label="E-mail" message="Champs obligatoires. Votre e-mail">
+        <b-input v-model="form.email" name="email" type="email" required />
       </b-field>
-      <hr>
+      <hr />
       <b-field horizontal>
         <div class="control">
-           <b-button :loading="loadingSave" class="is-info ml" @click="submit"> Soumettre</b-button>
+          <b-button :loading="loadingSave" class="is-info ml" @click="submit">Soumettre</b-button>
         </div>
       </b-field>
     </section>
@@ -45,8 +45,8 @@ export default {
   data () {
     return {
       isFileUploaded: false,
-       imageFile: null,
-       loadingSave: false,
+      imageFile: null,
+      loadingSave: false,
       isLoading: false,
       form: {
         name: null,
@@ -59,11 +59,7 @@ export default {
     }
   },
   computed: {
-    ...mapState([
-      'userName',
-      'userEmail',
-      'userAvatar'
-    ])
+    ...mapState(['userName', 'userEmail', 'userAvatar'])
   },
   mounted () {
     this.form.name = this.userName
@@ -77,22 +73,21 @@ export default {
         await this.validPhotoURL()
         const authRef = firebase.auth()
         const user = firebase.auth().currentUser
-        authRef.onAuthStateChanged( () => {
+        authRef.onAuthStateChanged(() => {
           if (this.user) {
-          this.user.updateProfile({
-            displayName: this.form.name,
-            email: this.form.email,
-            photoURL: this.form.photo.url
-            }).then(function() {
-              
-            }).catch(function(error) {
-                
+            this.user
+              .updateProfile({
+                displayName: this.form.name,
+                email: this.form.email,
+                photoURL: this.form.photo.url
+              })
+              .then(function () {})
+              .catch(function (error) {})
+            this.$buefy.snackbar.open({
+              message: 'Mise à jour',
+              queue: false
             })
-          this.$buefy.snackbar.open({
-            message: 'Mise à jour',
-            queue: false
-          })
-          this.$router.go(this.$router.currentRoute)
+            this.$router.go(this.$router.currentRoute)
           } else {
             console.log('not login')
           }
@@ -120,14 +115,17 @@ export default {
     },
     uploadAvatar () {
       return new Promise((resolve, reject) => {
-        const storageRef = storage.ref(`${this.form.photo.name}`).put(this.imageFile)
-        storageRef.on(`state_changed`,
-          (snapshot) => {},
-          (error) => {
+        const storageRef = storage
+          .ref(`${this.form.photo.name}`)
+          .put(this.imageFile)
+        storageRef.on(
+          `state_changed`,
+          snapshot => {},
+          error => {
             reject(error.message)
           },
           () => {
-            storageRef.snapshot.ref.getDownloadURL().then((url) => {
+            storageRef.snapshot.ref.getDownloadURL().then(url => {
               resolve(url)
             })
           }

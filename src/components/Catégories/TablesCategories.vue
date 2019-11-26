@@ -85,7 +85,6 @@ import ModalBox from '@/components/ModalBox'
 import { db } from '@/plugins/firebase'
 import AjoutCategorie from '@/components/Catégories/AjoutCategorie'
 import ModifierCategorie from '@/components/Catégories/ModifierCategorie'
-import { mapGetters } from 'vuex'
 export default {
   name: 'TableCategorie',
   components: { TitleBar, ModalBox, AjoutCategorie, ModifierCategorie },
@@ -104,10 +103,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'getCategories',
-      'getArticles'
-    ]),
     titleStack () {
       return [
         'Admin',
@@ -130,6 +125,22 @@ export default {
     }
   },
   methods: {
+    getCategoriesAndArticles () {
+      db.ref('categories').on('value', (snap) => {
+        if (snap.val()) {
+          this.categories = Object.values(snap.val())
+        } else {
+          this.categories = []
+        }
+      })
+      db.ref('articles').on('value', (snap) => {
+        if (snap.val()) {
+          this.articles = Object.values(snap.val())
+        } else {
+          this.articles = []
+        }
+      })
+    },
     trashModal (data) {
       this.trashObject = data
       this.isModalActive = true
@@ -151,6 +162,13 @@ export default {
     trashmodalmodifclose () {
       this.isComponentModalActive = false
     }
+  },
+  mounted () {
+    this.getCategoriesAndArticles()
+  },
+  destroyed () {
+    db.ref('categories/').off()
+    db.ref('articles/').off()
   }
 }
 </script>

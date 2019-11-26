@@ -32,7 +32,7 @@
             :striped="true"
             :hoverable="true"
             default-sort="name"
-            :data="articles">
+            :data="getArticles">
 
             <template slot-scope="props">
                 <b-table-column label="Nom de la Article" field="titre" sortable>
@@ -42,7 +42,7 @@
                 {{ props.row.date }}
                 </b-table-column>
                 <b-table-column label="Type Catégorie" field="typeCategorie" sortable>
-                {{ props.row.nomcat }}
+                {{ getTitleCat(props.row.idCat) }}
                 </b-table-column>
                 <b-table-column label="Actions" custom-key="actions" class="is-actions-cell">
                 <div class="buttons">
@@ -86,6 +86,7 @@ import { db } from '@/plugins/firebase'
 import AjoutArticle from '@/components/Articles/AjoutArticle'
 import ModifierArticle from '@/components/Articles/ModifierArticle'
 import SupprArticle from '@/components/Articles/SupprArticle'
+import { mapGetters } from 'vuex'
 export default {
   name: 'TableArticle',
   components: { TitleBar, AjoutArticle, ModifierArticle, SupprArticle },
@@ -114,6 +115,10 @@ export default {
     categories: db.ref('categories')
   },
   computed: {
+    ...mapGetters([
+      'getCategories',
+      'getArticles'
+    ]),
     titleStack () {
       return [
         'Admin',
@@ -129,17 +134,11 @@ export default {
     }
   },
   methods: {
-    getArticles () {
-      db.ref('articles').on('value', (snap) => {
-        if (snap.val()) {
-          this.articles = Object.values(snap.val())
-        } else {
-          this.articles = []
-        }
-      })
-    },
     getCategorie (id) {
       return this.categories ? ' ' : this.categories.find(cat => cat.id === id).libelle
+    },
+    getTitleCat (idCat) {
+      return this.getCategories.length ? ' ' : this.getCategories.find(cat => cat.idCat === idCat).libelle
     },
 
     trashModal (trashObject) {
@@ -167,33 +166,30 @@ export default {
   watch: {
     articles (newValue) {
       this.isLoading = false
-      this.articles = newValue
+      this.getArticles = newValue
       this.$compteur = 0
-      while (this.$compteur <= this.articles.length - 1) {
-        db.ref('categories/' + this.articles[this.$compteur].idCat).once('value', (snap) => {
+      while (this.$compteur <= this.getArticles.length - 1) {
+        db.ref('categories/' + this.getArticles[this.$compteur].idCat).once('value', (snap) => {
           if (snap.val()) {
             this.$categories = snap.val()
           } else {
             this.$categories = {}
           }
         })
-        this.articles[this.$compteur] = {
-          content: this.articles[this.$compteur].content,
-          date: this.articles[this.$compteur].date,
-          id: this.articles[this.$compteur].id,
-          idCat: this.articles[this.$compteur].idCat,
-          titre: this.articles[this.$compteur].titre,
+        this.getArticles[this.$compteur] = {
+          content: this.getArticles[this.$compteur].content,
+          date: this.getArticles[this.$compteur].date,
+          id: this.getArticles[this.$compteur].id,
+          idCat: this.getArticles[this.$compteur].idCat,
+          titre: this.getArticles[this.$compteur].titre,
           nomcat: this.$categories.libelle
         }
         this.$compteur++
       }
+    },
+    getCategories (newValueCat) {
+      console.log(newValueCat)
     }
-  },
-  mounted () {
-    this.getArticles()
-  },
-  destroyed () {
-    db.ref('articles/').off()
   }
 }
 </script>
