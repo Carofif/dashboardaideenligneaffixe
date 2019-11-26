@@ -72,36 +72,33 @@ export default {
   },
   methods: {
     async submit () {
-       try {
-    this.loadingSave = true
-    await this.validPhotoURL()
-    this.$user = firebase.auth().currentUser;
-    this.$authRef = firebase.auth();
-    this.$authRef.onAuthStateChanged( () => {
-        if (this.$user) {
-            this.$user.updateProfile({
-             displayName: this.form.name,
-             email: this.form.email,
-             photoURL: this.form.photo.url
-              }).then(function() {
-             
-              }).catch(function(error) {
-               // An error happened.
-});
-        this.$buefy.snackbar.open({
-          message: 'Mise à jour',
-          queue: false
+      try {
+        this.loadingSave = true
+        await this.validPhotoURL()
+        const authRef = firebase.auth()
+        const user = firebase.auth().currentUser
+        authRef.onAuthStateChanged( () => {
+          if (this.user) {
+          this.user.updateProfile({
+            displayName: this.form.name,
+            email: this.form.email,
+            photoURL: this.form.photo.url
+            }).then(function() {
+              
+            }).catch(function(error) {
+                
+            })
+          this.$buefy.snackbar.open({
+            message: 'Mise à jour',
+            queue: false
+          })
+          this.$router.go(this.$router.currentRoute)
+          } else {
+            console.log('not login')
+          }
         })
-        this.$router.go(this.$router.currentRoute)
-        } else {
-            console.log('not login');
-        }
-    });
-     this.loadingSave = false
-    } catch (error) {
-       
-      }
-        
+        this.loadingSave = false
+      } catch (error) {}
     },
     imageAdd (e) {
       const imge = e
@@ -110,9 +107,8 @@ export default {
       const reader = new FileReader()
       reader.readAsDataURL(imge)
       reader.onload = e => {
-          this.form.photo.url = e.target.result
+        this.form.photo.url = e.target.result
       }
-     
     },
     async validPhotoURL () {
       const re = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/

@@ -1,12 +1,6 @@
 <template>
   <div>
     <title-bar :title-stack="titleStack"/>
-    <hero-bar>
-      Ajout d'un utilisateur
-      <router-link slot="right" to="/" class="button">
-        Tableau de bord
-      </router-link>
-    </hero-bar>
     <section class="section is-main-section">
         <div class="card-content">
           <section class="modal-card-body">
@@ -58,13 +52,12 @@
 
 <script>
 import TitleBar from '@/components/TitleBar'
-import HeroBar from '@/components/HeroBar'
 import api from '@/config/api'
 import { storage } from '@/plugins/firebase'
 
 export default {
   name: 'AjoutUser',
-  components: { HeroBar, TitleBar },
+  components: { TitleBar },
   data () {
     return {
       firstName: {

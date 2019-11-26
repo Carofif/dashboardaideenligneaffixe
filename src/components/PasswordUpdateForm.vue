@@ -57,7 +57,7 @@ export default {
   methods: {
     async changePass () {
       try {
-        // this.loadingSave = true
+        this.loadingSave = true
         const currentUser = firebase.auth().currentUser
         const credential = firebase.auth.EmailAuthProvider.credential(
           currentUser.email,

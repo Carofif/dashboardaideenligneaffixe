@@ -1,12 +1,6 @@
 <template>
   <div>
     <title-bar :title-stack="titleStack"/>
-    <hero-bar>
-      Table Article
-      <router-link slot="right" to="/" class="button">
-        Tableau de bord
-      </router-link>
-    </hero-bar>
     <section class="section is-main-section">
         <div class="card">
             <header class="card-header">
@@ -88,14 +82,13 @@
 
 <script>
 import TitleBar from '@/components/TitleBar'
-import HeroBar from '@/components/HeroBar'
 import { db } from '@/plugins/firebase'
 import AjoutArticle from '@/components/Articles/AjoutArticle'
 import ModifierArticle from '@/components/Articles/ModifierArticle'
 import SupprArticle from '@/components/Articles/SupprArticle'
 export default {
   name: 'TableArticle',
-  components: { HeroBar, TitleBar, AjoutArticle, ModifierArticle, SupprArticle },
+  components: { TitleBar, AjoutArticle, ModifierArticle, SupprArticle },
   props: {
     checkable: {
       type: Boolean,

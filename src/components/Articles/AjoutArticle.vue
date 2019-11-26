@@ -38,7 +38,10 @@ import { db } from '@/plugins/firebase'
 import { VueEditor } from 'vue2-editor'
 import moment from 'moment'
 
+moment.locale('fr')
+
 export default {
+  props: [ 'isActive' ],
   data () {
     return {
       isComponentModalActive: false,
@@ -62,28 +65,40 @@ export default {
       })
     },
     addArticle () {
-      const id = db.ref('articles').push({ titre: this.titreArticle, content: this.content, idCat: this.catSelect, date: moment().format('lll') }).key
-      db.ref('articles').child(id).update({ id: id })
-      this.content = ''
-      this.titreArticle = ''
-      this.catSelect = ''
-      this.$buefy.toast.open({
-        message: 'Article enregistre',
-        type: 'is-success',
-        position: 'is-bottom'
-      })
+      if (this.titreArticle.length && this.content.length && this.catSelect) {
+        const idAct = db.ref().child('articles').push().key
+        db.ref('articles/' + idAct).set({
+          titre: this.titreArticle,
+          id: idAct,
+          content: this.content,
+          idCat: this.catSelect,
+          date: moment().format('YYYYMMDDHHmm')
+        })
+        this.titreArticle = ''
+        this.content = ''
+        this.$buefy.toast.open({
+          message: 'Article enregistrée',
+          type: 'is-success',
+          position: 'is-bottom'
+        })
+      } else {
+        this.$buefy.toast.open({
+          message: 'Aucune donnée saisie',
+          type: 'is-danger',
+          position: 'is-bottom'
+        })
+      }
     },
     annuler () {
       this.$emit('cancel')
+    },
+    confirmer () {
+      this.$emit('confirmer')
     }
   },
   watch: {
     isActive (newValue) {
       this.isComponentModalActive = newValue
-      this.newCat = {
-        libelle: this.modif.libelle,
-        imgcat: this.modif.image
-      }
     },
     isComponentModalActive (newValue) {
       if (!newValue) {

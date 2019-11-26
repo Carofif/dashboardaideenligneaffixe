@@ -12,7 +12,8 @@ import NavBar from '@/components/NavBar'
 import AsideMenu from '@/components/AsideMenu'
 import FooterBar from '@/components/FooterBar'
 import firebase from 'firebase'
-
+import { mapActions } from 'vuex'
+import { db } from '@/plugins/firebase'
 export default {
   name: 'home',
   components: {
@@ -22,7 +23,9 @@ export default {
   },
   data () {
     return {
-      show: false
+      show: false,
+      categories: [],
+      articles: []
     }
   },
   computed: {
@@ -60,6 +63,38 @@ export default {
         ]
       ]
     }
+  },
+  methods: {
+    ...mapActions([
+      'updateCategories',
+      'updateArticles'
+    ]),
+    getCategorie () {
+      db.ref('categories/').on('value', (snap) => {
+        if (snap.val()) {
+          this.updateCategories(Object.values(snap.val()))
+        } else {
+          this.updateCategories([])
+        }
+      })
+    },
+    getArticle () {
+      db.ref('articles/').on('value', (snap) => {
+        if (snap.val()) {
+          this.updateArticles(Object.values(snap.val()))
+        } else {
+          this.updateArticles([])
+        }
+      })
+    }
+  },
+  mounted () {
+    this.getCategorie()
+    this.getArticle()
+  },
+  destroyed () {
+    db.ref('categories/').off()
+    db.ref('articles/').off()
   },
   created () {
     this.$store.commit('user', {
