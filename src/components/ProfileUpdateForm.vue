@@ -1,13 +1,18 @@
 <template>
   <card-component title="Editer le profil" icon="account-circle">
-    <form @submit.prevent="submit">
-      <b-field horizontal label="Avatar">
+    <section class="section is-main-section">
+      <figure class="media-left">
+        <p class="image is-64x64">
+          <img :src="form.photo.url">
+        </p>
+      </figure>
+      <b-field class="file" horizontal label="Avatar">
         <b-upload @input="imageAdd">
-          <a class="button is-info">
-            <b-icon icon="upload"></b-icon>
-            <span>avatar</span>
-          </a>
-        </b-upload>
+        <a class="button is-info">
+        <b-icon icon="upload"></b-icon>
+        <span>Cliquer pour ajouter une photo</span>
+        </a>
+        </b-upload>     
       </b-field>
       <hr>
       <b-field horizontal label="Nom" message="Champs obligatoires. Votre nom">
@@ -19,18 +24,18 @@
       <hr>
       <b-field horizontal>
         <div class="control">
-          <button type="submit" class="button is-info" :class="{'is-loading':isLoading}">
-            Soumettre
-          </button>
+           <b-button :loading="loadingSave" class="is-info ml" @click="submit"> Soumettre</b-button>
         </div>
       </b-field>
-    </form>
+    </section>
   </card-component>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import CardComponent from '@/components/CardComponent'
+import firebase from 'firebase'
+import { storage } from '@/plugins/firebase'
 
 export default {
   name: 'ProfileUpdateForm',
@@ -40,43 +45,98 @@ export default {
   data () {
     return {
       isFileUploaded: false,
+       imageFile: null,
+       loadingSave: false,
       isLoading: false,
       form: {
         name: null,
-        email: null
-      },
-      photoUrl: ''
+        email: null,
+        photo: {
+          url: '',
+          name: ''
+        }
+      }
     }
   },
   computed: {
     ...mapState([
       'userName',
-      'userEmail'
+      'userEmail',
+      'userAvatar'
     ])
   },
   mounted () {
     this.form.name = this.userName
     this.form.email = this.userEmail
+    this.form.photo.url = this.userAvatar
   },
   methods: {
-    submit () {
-      this.isLoading = true
-      setTimeout(() => {
-        this.isLoading = false
-        this.$store.commit('user', this.form)
+    async submit () {
+       try {
+    this.loadingSave = true
+    await this.validPhotoURL()
+    this.$user = firebase.auth().currentUser;
+    this.$authRef = firebase.auth();
+    this.$authRef.onAuthStateChanged( () => {
+        if (this.$user) {
+            this.$user.updateProfile({
+             displayName: this.form.name,
+             email: this.form.email,
+             photoURL: this.form.photo.url
+              }).then(function() {
+             
+              }).catch(function(error) {
+               // An error happened.
+});
         this.$buefy.snackbar.open({
           message: 'Mise à jour',
           queue: false
         })
-      }, 500)
+        this.$router.go(this.$router.currentRoute)
+        } else {
+            console.log('not login');
+        }
+    });
+     this.loadingSave = false
+    } catch (error) {
+       
+      }
+        
     },
     imageAdd (e) {
       const imge = e
+      this.imageFile = e
+      this.form.photo.name = e.name
       const reader = new FileReader()
       reader.readAsDataURL(imge)
       reader.onload = e => {
-        this.photoUrl = e.target.result
+          this.form.photo.url = e.target.result
       }
+     
+    },
+    async validPhotoURL () {
+      const re = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/
+      if (!re.test(this.form.photo.url)) {
+        this.form.photo.url = await this.uploadAvatar()
+        return true
+      }
+      return true
+    },
+    uploadAvatar () {
+      return new Promise((resolve, reject) => {
+        const storageRef = storage.ref(`${this.form.photo.name}`).put(this.imageFile)
+        storageRef.on(`state_changed`,
+          (snapshot) => {},
+          (error) => {
+            reject(error.message)
+          },
+          () => {
+            storageRef.snapshot.ref.getDownloadURL().then((url) => {
+              resolve(url)
+            })
+          }
+        )
+      })
     }
   },
   watch: {
@@ -85,6 +145,9 @@ export default {
     },
     userEmail (newValue) {
       this.form.email = newValue
+    },
+    photo (newValue) {
+      this.form.photo = newValue
     }
   }
 }

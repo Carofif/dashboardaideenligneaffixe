@@ -198,7 +198,6 @@ export default {
   },
   mounted () {
     this.getArticles()
-    console.log(this.categories)
   },
   destroyed () {
     db.ref('articles/').off()
