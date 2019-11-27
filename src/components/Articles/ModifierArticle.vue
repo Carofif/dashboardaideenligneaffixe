@@ -99,7 +99,7 @@ export default {
         titre: val.titre,
         content: val.content
       }
-   }
+    }
   },
   mounted () {
     this.getCategorie()

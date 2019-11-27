@@ -133,30 +133,27 @@ export default {
     }
   },
   methods: {
-   getArticles () {
+    getArticles () {
       db.ref('articles').on('value', (snap) => {
         if (snap.val()) {
           this.articles = Object.values(snap.val())
           this.$compteur = 0
-         while (this.$compteur <= this.articles.length - 1) {
-        db.ref('categories/' + this.articles[this.$compteur].idCat).once('value', (snap) => {
-          if (snap.val()) {
-            this.$categories = snap.val()
-          } else {
-            this.$categories = {}
+          while (this.$compteur <= this.articles.length - 1) {
+            db.ref('categories/' + this.articles[this.$compteur].idCat).once('value', (snap) => {
+              if (snap.val()) {
+                this.$categories = snap.val()
+              } else {
+                this.$categories = {}
+              }
+            })
+            this.articles[this.$compteur].nomcat = this.$categories.libelle
+            this.$compteur++
           }
-        })
-        this.articles[this.$compteur].nomcat = this.$categories.libelle
-        this.$compteur++
-      }
         } else {
           this.articles = []
         }
       })
-      
     },
-
-
     trashModal (trashObject) {
       this.trashObject = trashObject
       this.isModalActive = true
@@ -177,11 +174,6 @@ export default {
     },
     trashmodalmodifclose () {
       this.isComponentModalActive = false
-    }
-  },
-  watch: {
-    articles (newValue) {
-      this.articles=newValue
     }
   },
   mounted () {

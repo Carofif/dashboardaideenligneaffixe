@@ -79,7 +79,7 @@ export default {
   watch: {
     isActive (newValue) {
       this.isComponentModalActive = newValue
-      },
+    },
     isComponentModalActive (newValue) {
       if (!newValue) {
         this.annuler()
