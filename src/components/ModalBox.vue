@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     annuler () {
-      this.$emit('annuler')
+      this.$emit('cancel')
     },
     confirmer () {
       if (this.trashObjectName.libelle) {

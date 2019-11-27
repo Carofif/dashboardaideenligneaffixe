@@ -35,6 +35,7 @@
 <script>
 import { db } from '@/plugins/firebase'
 export default {
+  props: [ 'isActive' ],
   data () {
     return {
       isComponentModalActive: false,
@@ -77,10 +78,6 @@ export default {
   watch: {
     isActive (newValue) {
       this.isComponentModalActive = newValue
-      this.newCat = {
-        libelle: this.modif.libelle,
-        imgcat: this.modif.image
-      }
     },
     isComponentModalActive (newValue) {
       if (!newValue) {

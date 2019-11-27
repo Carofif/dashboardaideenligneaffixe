@@ -13,7 +13,7 @@
                   </div>
                   <div class="level-right">
                       <div class="level-item">
-                        <ajout-article @catList="getCategorie"></ajout-article>
+                        <ajout-article @catList="getCategorie"/>>
                       </div>
                   </div>
               </div>
@@ -161,6 +161,9 @@ export default {
     },
     trashmodalmodifclose () {
       this.isComponentModalActive = false
+    },
+    trashmodalajoutclose () {
+      this.isComponentModalActive = false
     }
   },
   watch: {
@@ -186,9 +189,6 @@ export default {
         }
         this.$compteur++
       }
-    },
-    getCategories (newValueCat) {
-      console.log(newValueCat)
     }
   }
 }
