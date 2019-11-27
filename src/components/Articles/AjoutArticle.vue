@@ -10,7 +10,7 @@
                       <b-field label="Catégorie">
                           <b-select placeholder="Selectionner la catégorie" v-model="catSelect">
                               <option
-                                v-for="categorie in categories"
+                                v-for="categorie in getCategories"
                                 :value="categorie.id"
                                 :key="categorie.id">
                                 {{ categorie.libelle }}
@@ -37,6 +37,7 @@
 import { db } from '@/plugins/firebase'
 import { VueEditor } from 'vue2-editor'
 import moment from 'moment'
+import { mapGetters } from 'vuex'
 
 moment.locale('fr')
 
@@ -54,16 +55,12 @@ export default {
   components: {
     VueEditor
   },
+  computed: {
+    ...mapGetters([
+      'getCategories'
+    ])
+  },
   methods: {
-    getCategorie () {
-      db.ref('categories/').on('value', (snap) => {
-        if (snap.val()) {
-          this.categories = Object.values(snap.val())
-        } else {
-          this.categories = []
-        }
-      })
-    },
     addArticle () {
       if (this.titreArticle.length && this.content.length && this.catSelect) {
         const idAct = db.ref().child('articles').push().key
@@ -72,7 +69,7 @@ export default {
           id: idAct,
           content: this.content,
           idCat: this.catSelect,
-          date: moment().format('YYYYMMDDHHmm')
+          date: moment().format('lll')
         })
         this.titreArticle = ''
         this.content = ''
@@ -105,12 +102,6 @@ export default {
         this.annuler()
       }
     }
-  },
-  mounted () {
-    this.getCategorie()
-  },
-  destroyed () {
-    db.ref('categories/').off()
   }
 }
 </script>

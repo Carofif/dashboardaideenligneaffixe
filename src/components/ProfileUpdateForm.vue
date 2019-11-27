@@ -35,6 +35,7 @@
 import { mapState } from 'vuex'
 import CardComponent from '@/components/CardComponent'
 import firebase from 'firebase'
+import 'firebase/auth'
 import { storage } from '@/plugins/firebase'
 
 export default {
@@ -74,15 +75,15 @@ export default {
         const authRef = firebase.auth()
         const user = firebase.auth().currentUser
         authRef.onAuthStateChanged(() => {
-          if (this.user) {
-            this.user
+          if (user) {
+            user
               .updateProfile({
                 displayName: this.form.name,
                 email: this.form.email,
                 photoURL: this.form.photo.url
               })
               .then(function () {})
-              .catch(function (error) {})
+              .catch(function () {})
             this.$buefy.snackbar.open({
               message: 'Mise à jour',
               queue: false

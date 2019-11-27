@@ -11,9 +11,10 @@
 import NavBar from '@/components/NavBar'
 import AsideMenu from '@/components/AsideMenu'
 import FooterBar from '@/components/FooterBar'
-import firebase from 'firebase'
+// import firebase from 'firebase'
 import { mapActions, mapGetters } from 'vuex'
-import { db } from '@/plugins/firebase'
+import { db, auth } from '@/plugins/firebase'
+
 export default {
   name: 'home',
   components: {
@@ -76,8 +77,10 @@ export default {
       'updateArticles'
     ]),
     getCategorie () {
+      console.log('qlq3')
       db.ref('categories/').on('value', (snap) => {
         if (snap.val()) {
+          console.log('qlq4')
           this.updateCategories(Object.values(snap.val()))
         } else {
           this.updateCategories([])
@@ -85,8 +88,10 @@ export default {
       })
     },
     getArticle () {
+      console.log('qlq34')
       db.ref('articles').on('value', (snap) => {
         if (snap.val()) {
+          console.log('qlq45')
           this.updateArticles(Object.values(snap.val()))
           this.$compteur = 0
           this.$categories = {}
@@ -108,6 +113,7 @@ export default {
     }
   },
   mounted () {
+    console.log('qlq')
     this.getCategorie()
     this.getArticle()
   },
@@ -117,9 +123,9 @@ export default {
   },
   created () {
     this.$store.commit('user', {
-      name: firebase.auth().currentUser.displayName,
-      email: firebase.auth().currentUser.email,
-      avatar: firebase.auth().currentUser.photoURL
+      name: auth.currentUser.displayName,
+      email: auth.currentUser.email,
+      avatar: auth.currentUser.photoURL
     })
   }
 }
