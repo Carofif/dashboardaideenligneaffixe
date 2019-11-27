@@ -13,7 +13,7 @@
                   </div>
                   <div class="level-right">
                       <div class="level-item">
-                        <ajout-article @catList="getCategorie"/>>
+                        <ajout-article></ajout-article>
                       </div>
                   </div>
               </div>
@@ -42,7 +42,7 @@
                 {{ props.row.date }}
                 </b-table-column>
                 <b-table-column label="Type Catégorie" field="typeCategorie" sortable>
-                {{ getTitleCat(props.row.idCat) }}
+                {{ props.row.nomcat }}
                 </b-table-column>
                 <b-table-column label="Actions" custom-key="actions" class="is-actions-cell">
                 <div class="buttons">
@@ -111,11 +111,8 @@ export default {
       categories: []
     }
   },
-  firebase: {
-    categories: db.ref('categories')
-  },
   computed: {
-    ...mapGetters([
+    ...mapGetters ([
       'getCategories',
       'getArticles'
     ]),
@@ -134,13 +131,6 @@ export default {
     }
   },
   methods: {
-    getCategorie (id) {
-      return this.categories ? ' ' : this.categories.find(cat => cat.id === id).libelle
-    },
-    getTitleCat (idCat) {
-      return this.getCategories.length ? ' ' : this.getCategories.find(cat => cat.idCat === idCat).libelle
-    },
-
     trashModal (trashObject) {
       this.trashObject = trashObject
       this.isModalActive = true
@@ -161,34 +151,6 @@ export default {
     },
     trashmodalmodifclose () {
       this.isComponentModalActive = false
-    },
-    trashmodalajoutclose () {
-      this.isComponentModalActive = false
-    }
-  },
-  watch: {
-    articles (newValue) {
-      this.isLoading = false
-      this.getArticles = newValue
-      this.$compteur = 0
-      while (this.$compteur <= this.getArticles.length - 1) {
-        db.ref('categories/' + this.getArticles[this.$compteur].idCat).once('value', (snap) => {
-          if (snap.val()) {
-            this.$categories = snap.val()
-          } else {
-            this.$categories = {}
-          }
-        })
-        this.getArticles[this.$compteur] = {
-          content: this.getArticles[this.$compteur].content,
-          date: this.getArticles[this.$compteur].date,
-          id: this.getArticles[this.$compteur].id,
-          idCat: this.getArticles[this.$compteur].idCat,
-          titre: this.getArticles[this.$compteur].titre,
-          nomcat: this.$categories.libelle
-        }
-        this.$compteur++
-      }
     }
   }
 }

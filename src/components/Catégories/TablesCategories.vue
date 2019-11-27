@@ -2,78 +2,77 @@
   <div>
     <title-bar :title-stack="titleStack"/>
     <section class="section is-main-section">
-        <div class="card">
-            <header class="card-header">
-              <div class="level w-100">
-                  <div class="level-left">
-                      <div class="level-item">
-                         <b-icon icon="shape-outline"></b-icon>
-                         <p><strong>Table Catégorie</strong></p>
-                      </div>
-                  </div>
-                  <div class="level-right">
-                      <div class="level-item">
-                        <ajout-categorie></ajout-categorie>
-                      </div>
+      <div class="">
+        <header class="card-header">
+          <div class="level w-100">
+              <div class="level-left">
+                  <div class="level-item">
+                      <b-icon icon="shape-outline"></b-icon>
+                      <p><strong>Table Catégorie</strong></p>
                   </div>
               </div>
-            </header>
-            <div class="card-content">
-                 <div>
-            <modal-box :is-active="isModalActive" :trash-object-name="trashObjectName" :trash-object-article="trashObjectArticle"
-                    @confirm="trashConfirm" @annuler="trashCancel"/>
-            <modifier-categorie :is-active="isComponentModalActive" :val-modif="valModification"
-                    @cancel="trashmodalmodifclose"/>
+              <div class="level-right">
+                  <div class="level-item">
+                    <ajout-categorie></ajout-categorie>
+                  </div>
+              </div>
+          </div>
+        </header>
+            <modal-box
+              :is-active="isModalActive"
+              :trash-object-name="trashObjectName"
+              :trash-object-article="trashObjectArticle"
+              @confirm="trashConfirm" @annuler="trashCancel"/>
+            <modifier-categorie
+              :is-active="isComponentModalActive"
+              :val-modif="valModification"
+              @cancel="trashmodalmodifclose"/>
             <b-table
-            :checked-rows.sync="checkedRows"
-            :paginated="paginated"
-            :per-page="perPage"
-            :striped="true"
-            :hoverable="true"
-            default-sort="name"
-            :data="categories">
+              :checked-rows.sync="checkedRows"
+              :paginated="paginated"
+              :per-page="perPage"
+              default-sort="name"
+              :data="getCategories">
 
-            <template slot-scope="Lcategorie">
-                <b-table-column class="has-no-head-mobile is-image-cell">
-                <div class="image">
-                    <img :src="Lcategorie.row.image" class="image is-96x96">
-                </div>
-                </b-table-column>
-                <b-table-column label="Nom de la Catégorie" field="libelle" sortable>
-                {{ Lcategorie.row.libelle }}
-                </b-table-column>
-                <b-table-column label="Actions" custom-key="actions" class="is-actions-cell">
-                <div class="buttons">
-                    <button class="button is-small is-info" type="button" @click="trashModalModif(Lcategorie.row)">
-                    <b-icon icon="account-edit" size="is-small"/>
-                    </button>
-                    <button class="button is-small is-danger" type="button" @click="trashModal(Lcategorie.row)">
-                    <b-icon icon="trash-can" size="is-small"/>
-                    </button>
-                </div>
-                </b-table-column>
-            </template>
+              <template slot-scope="props">
+                  <b-table-column class="has-no-head-mobile is-image-cell">
+                  <div class="image">
+                      <img :src="props.row.image" class="image is-96x96">
+                  </div>
+                  </b-table-column>
+                  <b-table-column label="Nom de la Catégorie" field="libelle" sortable>
+                  {{ props.row.libelle }}
+                  </b-table-column>
+                  <b-table-column label="Actions" custom-key="actions" class="is-actions-cell">
+                  <div class="buttons">
+                      <button class="button is-small is-info" type="button" @click="trashModalModif(props.row)">
+                      <b-icon icon="account-edit" size="is-small"/>
+                      </button>
+                      <button class="button is-small is-danger" type="button" @click="trashModal(props.row)">
+                      <b-icon icon="trash-can" size="is-small"/>
+                      </button>
+                  </div>
+                  </b-table-column>
+              </template>
 
-            <section class="section" slot="empty">
-                <div class="content has-text-grey has-text-centered">
-                <template v-if="isLoading">
-                    <p>
-                    <b-icon icon="dots-horizontal" size="is-large"/>
-                    </p>
-                    <p>Récupération des données...&hellip;</p>
-                </template>
-                <template v-else>
-                    <p>
-                    <b-icon icon="emoticon-sad" size="is-large"/>
-                    </p>
-                    <p>Rien n'est là&hellip;</p>
-                </template>
-                </div>
-            </section>
+              <section class="section" slot="empty">
+                  <div class="content has-text-grey has-text-centered">
+                  <template v-if="isLoading">
+                      <p>
+                      <b-icon icon="dots-horizontal" size="is-large"/>
+                      </p>
+                      <p>Récupération des données...&hellip;</p>
+                  </template>
+                  <template v-else>
+                      <p>
+                      <b-icon icon="emoticon-sad" size="is-large"/>
+                      </p>
+                      <p>Rien n'est là&hellip;</p>
+                  </template>
+                  </div>
+              </section>
             </b-table>
-        </div>
-            </div>
-        </div>
+      </div>
     </section>
   </div>
 
@@ -82,9 +81,9 @@
 <script>
 import TitleBar from '@/components/TitleBar'
 import ModalBox from '@/components/ModalBox'
-import { db } from '@/plugins/firebase'
 import AjoutCategorie from '@/components/Catégories/AjoutCategorie'
 import ModifierCategorie from '@/components/Catégories/ModifierCategorie'
+import { mapGetters } from 'vuex'
 export default {
   name: 'TableCategorie',
   components: { TitleBar, ModalBox, AjoutCategorie, ModifierCategorie },
@@ -103,6 +102,10 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'getCategories',
+      'getArticles'
+    ]),
     titleStack () {
       return [
         'Admin',
@@ -118,29 +121,13 @@ export default {
     },
     trashObjectArticle () {
       if (this.trashObject) {
-        return this.articles.filter(art => art.idCat === this.trashObject.id)
+        return this.getArticles.filter(art => art.idCat === this.trashObject.id)
       } else {
         return []
       }
     }
   },
   methods: {
-    getCategoriesAndArticles () {
-      db.ref('categories').on('value', (snap) => {
-        if (snap.val()) {
-          this.categories = Object.values(snap.val())
-        } else {
-          this.categories = []
-        }
-      })
-      db.ref('articles').on('value', (snap) => {
-        if (snap.val()) {
-          this.articles = Object.values(snap.val())
-        } else {
-          this.articles = []
-        }
-      })
-    },
     trashModal (data) {
       this.trashObject = data
       this.isModalActive = true
@@ -162,13 +149,6 @@ export default {
     trashmodalmodifclose () {
       this.isComponentModalActive = false
     }
-  },
-  mounted () {
-    this.getCategoriesAndArticles()
-  },
-  destroyed () {
-    db.ref('categories/').off()
-    db.ref('articles/').off()
   }
 }
 </script>

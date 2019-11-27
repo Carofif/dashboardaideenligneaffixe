@@ -8,14 +8,10 @@ export default new Vuex.Store({
     userName: null,
     userEmail: null,
     userAvatar: null,
-
     isNavBarVisible: true,
-
     isFooterBarVisible: true,
-
     isAsideVisible: true,
     isAsideMobileExpanded: false,
-
     categories: [],
     articles: []
   },
@@ -68,6 +64,12 @@ export default new Vuex.Store({
     },
     getArticles: state => {
       return state.articles
+    },
+    getCategorieTail: state => {
+      return state.categories.length
+    },
+    getArticleTail: state => {
+      return state.articles.length
     }
   },
   actions: {

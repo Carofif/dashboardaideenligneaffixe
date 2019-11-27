@@ -3,8 +3,8 @@
     <title-bar :title-stack="titleStack"/>
     <section class="section is-main-section">
       <tiles>
-        <card-widget class="tile is-child" type="is-primary" icon="shape-outline" :number="512" label="Catégories"/>
-        <card-widget class="tile is-child" type="is-info" icon="newspaper-variant-multiple-outline" :number="7770" label="Articles"/>
+        <card-widget class="tile is-child" type="is-primary" icon="shape-outline" :number="getCategorieTail" label="Catégories"/>
+        <card-widget class="tile is-child" type="is-info" icon="newspaper-variant-multiple-outline" :number="getArticleTail" label="Articles"/>
         <card-widget class="tile is-child" type="is-success" icon="chart-timeline-variant" :number="256" suffix="%" label="Performance"/>
       </tiles>
 
@@ -29,6 +29,7 @@ import Tiles from '@/components/Tiles'
 import CardWidget from '@/components/CardWidget'
 import CardComponent from '@/components/CardComponent'
 import LineChart from '@/components/Charts/LineChart'
+import { mapGetters } from 'vuex'
 export default {
   name: 'home',
   components: {
@@ -47,6 +48,10 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'getCategorieTail',
+      'getArticleTail'
+    ]),
     titleStack () {
       return [
         'Admin',

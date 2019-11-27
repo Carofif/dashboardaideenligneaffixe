@@ -59,7 +59,8 @@ export default {
     },
     modifierCat () {
       if (this.modif.libelle.length) {
-        this.modif = this.newCat
+        this.modif.libelle = this.newCat.libelle
+        this.modif.image = this.newCat.imgcat
         db.ref('categories').child(this.modif.id).update({ libelle: this.modif.libelle, image: this.modif.image })
         this.$buefy.toast.open({
           message: 'Modification de Categorie confirmé',
@@ -78,10 +79,6 @@ export default {
   watch: {
     isActive (newValue) {
       this.isComponentModalActive = newValue
-      this.newCat = {
-        libelle: this.modif.libelle,
-        imgcat: this.modif.image
-      }
     },
     isComponentModalActive (newValue) {
       if (!newValue) {
