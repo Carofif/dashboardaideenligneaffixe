@@ -2,7 +2,7 @@
      <b-modal :active.sync="isComponentModalActive" has-modal-card trap-focus>
               <div class="modal-card">
                   <header class="modal-card-head">
-                      <p class="modal-card-title">Modifier une catégorie</p>
+                      <p class="modal-card-title">Modifier un Article</p>
                    </header>
                   <section class="modal-card-body">
                      <b-field label="Catégorie">
@@ -16,10 +16,10 @@
                           </b-select>
                       </b-field>
                         <b-field label="Titre de l'article">
-                            <b-input v-model="modif.titre"></b-input>
+                            <b-input v-model="newArt.titre"></b-input>
                         </b-field>
                         <b-field label="Contenue de l'article">
-                            <vue-editor v-model="modif.content"/>
+                            <vue-editor v-model="newArt.content"/>
                         </b-field>
                   </section>
                   <footer class="modal-card-foot">
@@ -64,7 +64,9 @@ export default {
     },
     modifierArt () {
       if (this.modif.titre.length && this.modif.content.length) {
-        this.modif = this.newArt
+        this.modif.content = this.newArt.content
+        this.modif.titre = this.newArt.titre
+        this.modif.idCat = this.newArt.idCat
         db.ref('articles').child(this.modif.id).update({ content: this.modif.content, idCat: this.modif.idCat, titre: this.modif.titre })
         this.$buefy.toast.open({
           message: 'Modification confirmé',
@@ -91,8 +93,13 @@ export default {
     },
     valModif (val) {
       this.modif = val
-      this.newArt = val
-    }
+      this.newArt = {
+        idCat: val.idCat,
+        id: val.id,
+        titre: val.titre,
+        content: val.content
+      }
+   }
   },
   mounted () {
     this.getCategorie()

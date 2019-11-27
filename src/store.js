@@ -8,13 +8,12 @@ export default new Vuex.Store({
     userName: null,
     userEmail: null,
     userAvatar: null,
-
     isNavBarVisible: true,
-
     isFooterBarVisible: true,
-
     isAsideVisible: true,
-    isAsideMobileExpanded: false
+    isAsideMobileExpanded: false,
+    categories: [],
+    articles: []
   },
   mutations: {
     basic (state, payload) {
@@ -51,9 +50,28 @@ export default new Vuex.Store({
       }
 
       state.isAsideMobileExpanded = isShow
+    },
+    SET_CATEGORIES: (state, data) => {
+      state.categories = data
+    },
+    SET_ARTICLES: (state, data) => {
+      state.articles = data
+    }
+  },
+  getters: {
+    getCategories: state => {
+      return state.categories
+    },
+    getArticles: state => {
+      return state.articles
     }
   },
   actions: {
-
+    updateCategories: (context, data) => {
+      context.commit('SET_CATEGORIES', data)
+    },
+    updateArticles: (context, data) => {
+      context.commit('SET_ARTICLES', data)
+    }
   }
 })

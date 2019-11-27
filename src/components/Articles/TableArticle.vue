@@ -19,7 +19,7 @@
                   </div>
                   <div class="level-right">
                       <div class="level-item">
-                        <ajout-article @catList="getCategorie"></ajout-article>
+                        <ajout-article></ajout-article>
                       </div>
                   </div>
               </div>
@@ -117,9 +117,6 @@ export default {
       categories: []
     }
   },
-  firebase: {
-    categories: db.ref('categories')
-  },
   computed: {
     titleStack () {
       return [
@@ -136,19 +133,29 @@ export default {
     }
   },
   methods: {
-    getArticles () {
+   getArticles () {
       db.ref('articles').on('value', (snap) => {
-        console.log("at")
         if (snap.val()) {
           this.articles = Object.values(snap.val())
+          this.$compteur = 0
+         while (this.$compteur <= this.articles.length - 1) {
+        db.ref('categories/' + this.articles[this.$compteur].idCat).once('value', (snap) => {
+          if (snap.val()) {
+            this.$categories = snap.val()
+          } else {
+            this.$categories = {}
+          }
+        })
+        this.articles[this.$compteur].nomcat = this.$categories.libelle
+        this.$compteur++
+      }
         } else {
           this.articles = []
         }
       })
+      
     },
-    getCategorie (id) {
-      return this.categories ? ' ' : this.categories.find(cat => cat.id === id).libelle
-    },
+
 
     trashModal (trashObject) {
       this.trashObject = trashObject
@@ -174,27 +181,7 @@ export default {
   },
   watch: {
     articles (newValue) {
-      this.isLoading = false
-      this.articles = newValue
-      this.$compteur = 0
-      while (this.$compteur <= this.articles.length - 1) {
-        db.ref('categories/' + this.articles[this.$compteur].idCat).once('value', (snap) => {
-          if (snap.val()) {
-            this.$categories = snap.val()
-          } else {
-            this.$categories = {}
-          }
-        })
-        this.articles[this.$compteur] = {
-          content: this.articles[this.$compteur].content,
-          date: this.articles[this.$compteur].date,
-          id: this.articles[this.$compteur].id,
-          idCat: this.articles[this.$compteur].idCat,
-          titre: this.articles[this.$compteur].titre,
-          nomcat: this.$categories.libelle
-        }
-        this.$compteur++
-      }
+      this.articles=newValue
     }
   },
   mounted () {
