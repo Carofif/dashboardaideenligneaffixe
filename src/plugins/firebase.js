@@ -4,13 +4,13 @@ import 'firebase/auth'
 import 'firebase/storage'
 
 const app = firebase.initializeApp({
-  apiKey: 'AIzaSyBBo9i47izPaJx63AaSXf0ulTZ4a5HR0cE',
-  authDomain: 'aide-en-ligne-affixe.firebaseapp.com',
-  databaseURL: 'https://aide-en-ligne-affixe.firebaseio.com',
-  projectId: 'aide-en-ligne-affixe',
-  storageBucket: 'aide-en-ligne-affixe.appspot.com',
-  messagingSenderId: '192306049259',
-  appId: '1:192306049259:web:fbca040e0d9744ecc38eae'
+  apiKey: 'AIzaSyASf4fgwPYCVvJGlYtuyEysUwgu6cuzJ_U',
+  authDomain: 'aide-en-ligne-affixe2.firebaseapp.com',
+  databaseURL: 'https://aide-en-ligne-affixe2.firebaseio.com',
+  projectId: 'aide-en-ligne-affixe2',
+  storageBucket: 'aide-en-ligne-affixe2.appspot.com',
+  messagingSenderId: '1007272013383',
+  appId: '1:1007272013383:web:3c5a65af83f00f4cc98b62'
 })
 
 export const db = app.database()
