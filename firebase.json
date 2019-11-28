@@ -1,0 +1,17 @@
+{
+  "hosting": {
+    "site": "aide-en-ligne-affixe-dash",
+    "public": "dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
