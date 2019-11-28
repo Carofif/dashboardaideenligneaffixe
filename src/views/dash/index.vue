@@ -12,6 +12,8 @@ import NavBar from '@/components/NavBar'
 import AsideMenu from '@/components/AsideMenu'
 import FooterBar from '@/components/FooterBar'
 import firebase from 'firebase'
+import { mapGetters , mapActions } from 'vuex'
+import { db } from '@/plugins/firebase'
 
 export default {
   name: 'home',
@@ -26,6 +28,10 @@ export default {
     }
   },
   computed: {
+     ...mapGetters([
+      'getCategories',
+      'getArticles'
+    ]),
     menu () {
       return [
         [
@@ -60,6 +66,49 @@ export default {
         ]
       ]
     }
+  },
+  methods:
+  {
+    ...mapActions([
+      'updateCategories',
+      'updateArticles'
+    ]),
+     getArticle () {
+      db.ref('articles').on('value', (snap) => {
+        if (snap.val()) {
+          this.updateArticles(Object.values(snap.val()))
+          this.$compteur = 0
+          this.$categories = {}
+          while (this.$compteur <= this.getArticles.length - 1) {
+            db.ref('categories/' + this.getArticles[this.$compteur].idCat).once('value', (snap) => {
+              if (snap.val()) {
+                this.$categories = snap.val()
+              } else {
+                this.$categories = {}
+              }
+            })
+            this.getArticles[this.$compteur].nomcat = this.$categories.libelle
+            this.$compteur++
+          }
+        } else {
+          this.updateArticles([])
+        }
+      })
+    },
+     getCategorie () {
+      db.ref('categories/').on('value', (snap) => {
+        if (snap.val()) {
+          this.updateCategories(Object.values(snap.val()))
+        } else {
+          this.updateCategories([])
+        }
+      })
+    }
+  },
+  mounted ()
+  {
+    this.getArticle();
+    this.getCategorie();
   },
   created () {
     this.$store.commit('user', {

@@ -8,7 +8,7 @@
                      <b-field label="Catégorie">
                           <b-select placeholder="Selectionner la catégorie" v-model ="newArt.idCat" >
                               <option
-                                v-for="categorie in categories"
+                                v-for="categorie in getCategories"
                                 :value="categorie.id"
                                 :key="categorie.id">
                                 {{ categorie.libelle }}
@@ -33,29 +33,26 @@
 <script>
 import { db } from '@/plugins/firebase'
 import { VueEditor } from 'vue2-editor'
+import { mapGetters } from 'vuex'
+
 export default {
   props: ['isActive', 'valModif'],
   data () {
     return {
       isComponentModalActive: false,
       modif: {},
-      newArt: {},
-      categories: []
+      newArt: {}
     }
   },
   components: {
     VueEditor
   },
-  methods: {
-    getCategorie () {
-      db.ref('categories/').on('value', (snap) => {
-        if (snap.val()) {
-          this.categories = Object.values(snap.val())
-        } else {
-          this.categories = []
-        }
-      })
+   computed: {
+     ...mapGetters([
+      'getCategories'
+    ])
     },
+  methods: {
     annuler () {
       this.$emit('cancel')
     },
@@ -100,12 +97,6 @@ export default {
         content: val.content
       }
     }
-  },
-  mounted () {
-    this.getCategorie()
-  },
-  destroyed () {
-    db.ref('categories/').off()
   }
 }
 </script>
