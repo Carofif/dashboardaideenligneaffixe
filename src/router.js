@@ -3,7 +3,8 @@ import Router from 'vue-router'
 import Dash from './views/dash/index.vue'
 import Home from './views/dash/Home.vue'
 import Connexion from './views/Connexion.vue'
-import firebase from 'firebase'
+// import firebase from 'firebase'
+import { auth } from '@/plugins/firebase'
 
 Vue.use(Router)
 
@@ -66,7 +67,7 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  const currentUser = firebase.auth().currentUser
+  const currentUser = auth.currentUser
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
   if (requiresAuth && !currentUser) next('Connexion')
   else if (!requiresAuth && currentUser) next('dash')

@@ -1,17 +1,20 @@
 <template>
   <div>
     <title-bar :title-stack="titleStack"/>
-    <hero-bar :has-right-visible="false">
-      Tableau de bord
-    </hero-bar>
     <section class="section is-main-section">
       <tiles>
+<<<<<<< HEAD
         <card-widget class="tile is-child" type="is-primary" icon="account-multiple" :number="getCategories.length" label="Clients"/>
         <card-widget class="tile is-child" type="is-info" icon="cart-outline" :number="7770" prefix="$" label="Sales"/>
         <card-widget class="tile is-child" type="is-success" icon="chart-timeline-variant" :number="256" suffix="%" label="Performance"/>
+=======
+        <card-widget class="tile is-child" type="is-primary" icon="shape-outline" :number="getCategorieTail" label="Catégories"/>
+        <card-widget class="tile is-child" type="is-info" icon="newspaper-variant-multiple-outline" :number="getArticleTail" label="Articles"/>
+        <!-- <card-widget class="tile is-child" type="is-success" icon="chart-timeline-variant" :number="256" suffix="%" label="Performance"/> -->
+>>>>>>> c-001
       </tiles>
 
-      <card-component title="Performance" @header-icon-click="fillChartData" icon="finance" header-icon="reload">
+     <!--  <card-component title="Performance" @header-icon-click="fillChartData" icon="finance" header-icon="reload">
         <div v-if="defaultChart.chartData" class="chart-area">
           <line-chart style="height: 100%"
                       ref="bigChart"
@@ -20,16 +23,14 @@
                       :extra-options="defaultChart.extraOptions">
           </line-chart>
         </div>
-      </card-component>
+      </card-component> -->
     </section>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
 import * as chartConfig from '@/components/Charts/chart.config'
 import TitleBar from '@/components/TitleBar'
-import HeroBar from '@/components/HeroBar'
 import Tiles from '@/components/Tiles'
 import CardWidget from '@/components/CardWidget'
 import CardComponent from '@/components/CardComponent'
@@ -42,7 +43,6 @@ export default {
     CardComponent,
     CardWidget,
     Tiles,
-    HeroBar,
     TitleBar
   },
   data () {
@@ -54,9 +54,15 @@ export default {
     }
   },
   computed: {
+<<<<<<< HEAD
      ...mapGetters([
       'getCategories',
       'getArticles'
+=======
+    ...mapGetters([
+      'getCategorieTail',
+      'getArticleTail'
+>>>>>>> c-001
     ]),
     titleStack () {
       return [
@@ -69,7 +75,7 @@ export default {
     this.fillChartData()
 
     this.$buefy.snackbar.open({
-      message: 'Welcome back',
+      message: 'Bienvenue',
       queue: false
     })
   },

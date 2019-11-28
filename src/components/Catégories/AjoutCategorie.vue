@@ -18,7 +18,6 @@
                         {{image.name}}
                       </span>
                     </b-field>
-
                     <b-field label="Catégorie">
                       <b-input v-model="newCategorie"></b-input>
                     </b-field>
@@ -35,6 +34,7 @@
 <script>
 import { db } from '@/plugins/firebase'
 export default {
+  props: [ 'isActive' ],
   data () {
     return {
       isComponentModalActive: false,
@@ -72,15 +72,12 @@ export default {
     },
     annuler () {
       this.$emit('cancel')
+      this.isComponentModalActive = false
     }
   },
   watch: {
     isActive (newValue) {
       this.isComponentModalActive = newValue
-      this.newCat = {
-        libelle: this.modif.libelle,
-        imgcat: this.modif.image
-      }
     },
     isComponentModalActive (newValue) {
       if (!newValue) {

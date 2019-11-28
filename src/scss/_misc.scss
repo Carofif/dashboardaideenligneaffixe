@@ -10,7 +10,11 @@
   img {
     margin: 0 auto;
     border-radius: $radius-rounded;
-  }
+    -webkit-border-radius: $radius-rounded;
+    -moz-border-radius: $radius-rounded;
+    -ms-border-radius: $radius-rounded;
+    -o-border-radius: $radius-rounded;
+}
 }
 
 .icon.has-update-mark {

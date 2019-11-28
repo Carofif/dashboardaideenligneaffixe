@@ -50,7 +50,7 @@ export default {
           position: 'is-bottom'
         })
       }
-      this.$emit('confirm')
+      this.$emit('confirmer')
     }
   },
   destroyed () {

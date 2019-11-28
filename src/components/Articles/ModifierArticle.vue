@@ -54,7 +54,7 @@ export default {
     },
   methods: {
     annuler () {
-      this.$emit('cancel')
+      this.isComponentModalActive = false
     },
     confirmer () {
       this.$emit('confirmer')

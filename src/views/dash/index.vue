@@ -11,9 +11,15 @@
 import NavBar from '@/components/NavBar'
 import AsideMenu from '@/components/AsideMenu'
 import FooterBar from '@/components/FooterBar'
+<<<<<<< HEAD
 import firebase from 'firebase'
 import { mapGetters , mapActions } from 'vuex'
 import { db } from '@/plugins/firebase'
+=======
+// import firebase from 'firebase'
+import { mapActions, mapGetters } from 'vuex'
+import { db, auth } from '@/plugins/firebase'
+>>>>>>> c-001
 
 export default {
   name: 'home',
@@ -24,13 +30,23 @@ export default {
   },
   data () {
     return {
-      show: false
+      show: false,
+      categories: [],
+      articles: []
     }
   },
   computed: {
+<<<<<<< HEAD
      ...mapGetters([
       'getCategories',
       'getArticles'
+=======
+    ...mapGetters([
+      'getCategories',
+      'getArticles',
+      'getCategorieTail',
+      'getArticleTail'
+>>>>>>> c-001
     ]),
     menu () {
       return [
@@ -67,13 +83,30 @@ export default {
       ]
     }
   },
+<<<<<<< HEAD
   methods:
   {
+=======
+  methods: {
+>>>>>>> c-001
     ...mapActions([
       'updateCategories',
       'updateArticles'
     ]),
+<<<<<<< HEAD
      getArticle () {
+=======
+    getCategorie () {
+      db.ref('categories/').on('value', (snap) => {
+        if (snap.val()) {
+          this.updateCategories(Object.values(snap.val()))
+        } else {
+          this.updateCategories([])
+        }
+      })
+    },
+    getArticle () {
+>>>>>>> c-001
       db.ref('articles').on('value', (snap) => {
         if (snap.val()) {
           this.updateArticles(Object.values(snap.val()))
@@ -94,6 +127,7 @@ export default {
           this.updateArticles([])
         }
       })
+<<<<<<< HEAD
     },
      getCategorie () {
       db.ref('categories/').on('value', (snap) => {
@@ -109,12 +143,23 @@ export default {
   {
     this.getArticle();
     this.getCategorie();
+=======
+    }
+  },
+  mounted () {
+    this.getCategorie()
+    this.getArticle()
+  },
+  destroyed () {
+    db.ref('categories/').off()
+    db.ref('articles/').off()
+>>>>>>> c-001
   },
   created () {
     this.$store.commit('user', {
-      name: firebase.auth().currentUser.displayName,
-      email: firebase.auth().currentUser.email,
-      avatar: firebase.auth().currentUser.photoURL
+      name: auth.currentUser.displayName,
+      email: auth.currentUser.email,
+      avatar: auth.currentUser.photoURL
     })
   }
 }

@@ -1,53 +1,59 @@
 <template>
-  <card-component title="Editer le profil" icon="account-circle">
-    <section class="section is-main-section">
-      <figure class="media-left">
-        <p class="image is-64x64">
-          <img :src="form.photo.url">
-        </p>
-      </figure>
-      <b-field class="file" horizontal label="Avatar">
-        <b-upload @input="imageAdd">
-        <a class="button is-info">
-        <b-icon icon="upload"></b-icon>
-        <span>Cliquer pour ajouter une photo</span>
-        </a>
-        </b-upload>     
-      </b-field>
-      <hr>
-      <b-field horizontal label="Nom" message="Champs obligatoires. Votre nom">
-        <b-input v-model="form.name" name="name" required/>
-      </b-field>
-      <b-field horizontal="" label="E-mail" message="Champs obligatoires. Votre e-mail">
-        <b-input v-model="form.email" name="email" type="email" required/>
-      </b-field>
-      <hr>
-      <b-field horizontal>
-        <div class="control">
-           <b-button :loading="loadingSave" class="is-info ml" @click="submit"> Soumettre</b-button>
-        </div>
-      </b-field>
-    </section>
-  </card-component>
+  <div>
+    <a @click="isComponentModalActive = true">
+      <b-button class="is-info">Modifier Profil</b-button>
+    </a>
+    <b-modal :active.sync="isComponentModalActive" has-modal-card trap-focus>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Editer le profil</p>
+        </header>
+        <section class="modal-card-body">
+          <figure class="media-left">
+            <p class="image is-64x64">
+              <img :src="form.photo.url" />
+            </p>
+          </figure>
+          <b-field class="file" horizontal label="Avatar">
+            <b-upload @input="imageAdd">
+              <a class="button is-info">
+                <b-icon icon="upload"></b-icon>
+                <span>Cliquer pour ajouter une photo</span>
+              </a>
+            </b-upload>
+          </b-field>
+          <hr />
+          <b-field horizontal label="Nom" message="Champs obligatoires. Votre nom">
+            <b-input v-model="form.name" name="name" required />
+          </b-field>
+          <b-field horizontal label="E-mail" message="Champs obligatoires. Votre e-mail">
+            <b-input v-model="form.email" name="email" type="email" required />
+          </b-field>
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button" type="button" @click="annuler">Fermer</button>
+          <b-button :loading="loadingSave" class="is-info ml" @click="submit">Soumettre</b-button>
+        </footer>
+      </div>
+    </b-modal>
+  </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import CardComponent from '@/components/CardComponent'
 import firebase from 'firebase'
+import 'firebase/auth'
 import { storage } from '@/plugins/firebase'
 
 export default {
   name: 'ProfileUpdateForm',
-  components: {
-    CardComponent
-  },
   data () {
     return {
       isFileUploaded: false,
-       imageFile: null,
-       loadingSave: false,
+      imageFile: null,
+      loadingSave: false,
       isLoading: false,
+      isComponentModalActive: false,
       form: {
         name: null,
         email: null,
@@ -59,11 +65,7 @@ export default {
     }
   },
   computed: {
-    ...mapState([
-      'userName',
-      'userEmail',
-      'userAvatar'
-    ])
+    ...mapState(['userName', 'userEmail', 'userAvatar'])
   },
   mounted () {
     this.form.name = this.userName
@@ -72,36 +74,33 @@ export default {
   },
   methods: {
     async submit () {
-       try {
-    this.loadingSave = true
-    await this.validPhotoURL()
-    this.$user = firebase.auth().currentUser;
-    this.$authRef = firebase.auth();
-    this.$authRef.onAuthStateChanged( () => {
-        if (this.$user) {
-            this.$user.updateProfile({
-             displayName: this.form.name,
-             email: this.form.email,
-             photoURL: this.form.photo.url
-              }).then(function() {
-             
-              }).catch(function(error) {
-               // An error happened.
-});
-        this.$buefy.snackbar.open({
-          message: 'Mise à jour',
-          queue: false
+      try {
+        this.loadingSave = true
+        await this.validPhotoURL()
+        const authRef = firebase.auth()
+        const user = firebase.auth().currentUser
+        authRef.onAuthStateChanged(() => {
+          if (user) {
+            user
+              .updateProfile({
+                displayName: this.form.name,
+                email: this.form.email,
+                photoURL: this.form.photo.url
+              })
+              .then(function () {})
+              .catch(function () {})
+            this.$buefy.snackbar.open({
+              message: 'Mise à jour',
+              queue: false
+            })
+            this.$router.go(this.$router.currentRoute)
+          } else {
+            console.log('not login')
+          }
         })
-        this.$router.go(this.$router.currentRoute)
-        } else {
-            console.log('not login');
-        }
-    });
-     this.loadingSave = false
-    } catch (error) {
-       
-      }
-        
+        this.loadingSave = false
+        this.isComponentModalActive = false
+      } catch (error) {}
     },
     imageAdd (e) {
       const imge = e
@@ -110,9 +109,8 @@ export default {
       const reader = new FileReader()
       reader.readAsDataURL(imge)
       reader.onload = e => {
-          this.form.photo.url = e.target.result
+        this.form.photo.url = e.target.result
       }
-     
     },
     async validPhotoURL () {
       const re = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/
@@ -124,19 +122,26 @@ export default {
     },
     uploadAvatar () {
       return new Promise((resolve, reject) => {
-        const storageRef = storage.ref(`${this.form.photo.name}`).put(this.imageFile)
-        storageRef.on(`state_changed`,
-          (snapshot) => {},
-          (error) => {
+        const storageRef = storage
+          .ref(`${this.form.photo.name}`)
+          .put(this.imageFile)
+        storageRef.on(
+          `state_changed`,
+          snapshot => {},
+          error => {
             reject(error.message)
           },
           () => {
-            storageRef.snapshot.ref.getDownloadURL().then((url) => {
+            storageRef.snapshot.ref.getDownloadURL().then(url => {
               resolve(url)
             })
           }
         )
       })
+    },
+    annuler () {
+      this.$emit('cancel')
+      this.isComponentModalActive = false
     }
   },
   watch: {

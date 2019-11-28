@@ -64,6 +64,12 @@ export default new Vuex.Store({
     },
     getArticles: state => {
       return state.articles
+    },
+    getCategorieTail: state => {
+      return state.categories.length
+    },
+    getArticleTail: state => {
+      return state.articles.length
     }
   },
   actions: {
