@@ -17,7 +17,7 @@
     </div>
     <div class="navbar-menu fadeIn animated faster" :class="{'is-active':isMenuNavBarActive}">
       <div class="navbar-end">
-        <nav-bar-menu class="has-divider">
+        <!-- <nav-bar-menu class="has-divider">
           <b-icon icon="menu" custom-size="default"/>
           <span>Menu</span>
           <div slot="dropdown" class="navbar-dropdown">
@@ -39,7 +39,7 @@
               <span>Déconnexion</span>
             </a>
           </div>
-        </nav-bar-menu>
+        </nav-bar-menu> -->
         <nav-bar-menu class="has-divider has-user-avatar">
           <user-avatar/>
           <div class="is-user-name">
@@ -66,10 +66,6 @@
             </a>
           </div>
         </nav-bar-menu>
-        <a href="https://justboil.me/bulma-admin-template/one" class="navbar-item has-divider is-desktop-icon-only" title="A propos">
-          <b-icon icon="help-circle-outline" custom-size="default"/>
-          <span>A propos</span>
-        </a>
         <a class="navbar-item is-desktop-icon-only" title="Déconnexion" @click="deconnexion">
           <b-icon icon="logout" custom-size="default"/>
           <span>Déconnexion</span>

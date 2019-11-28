@@ -33,6 +33,7 @@
 <script>
 import { db } from '@/plugins/firebase'
 import { VueEditor } from 'vue2-editor'
+
 export default {
   props: ['isActive', 'valModif'],
   data () {
@@ -57,7 +58,7 @@ export default {
       })
     },
     annuler () {
-      this.$emit('cancel')
+      this.isComponentModalActive = false
     },
     confirmer () {
       this.$emit('confirmer')

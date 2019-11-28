@@ -3,20 +3,22 @@
     <title-bar :title-stack="titleStack"/>
     <section class="section is-main-section">
       <tiles>
-        <profile-update-form class="tile is-child"/>
         <card-component title="Profil" icon="account" class="tile is-child">
-          <user-avatar class="image has-max-width is-aligned-center"/>
+          <div class="level-left">
+            <user-avatar class="image has-max-width is-aligned-left"/>
+          </div>
           <hr>
-          <b-field label="Nom">
-            <b-input :value="userName" custom-class="is-static" readonly/>
-          </b-field>
-          <hr>
-          <b-field label="E-mail">
-            <b-input :value="userEmail" custom-class="is-static" readonly/>
-          </b-field>
+          <div class="level-item">
+            <b-field label="Nom" position="is-right">
+              <b-input :value="userName" custom-class="is-static" readonly/>
+            </b-field>
+            <hr>
+            <b-field label="E-mail" position="is-right">
+              <b-input :value="userEmail" custom-class="is-static" readonly/>
+            </b-field>
+          </div>
         </card-component>
       </tiles>
-      <password-update-form/>
     </section>
   </div>
 </template>
@@ -25,13 +27,11 @@
 import { mapState } from 'vuex'
 import CardComponent from '@/components/CardComponent'
 import TitleBar from '@/components/TitleBar'
-import ProfileUpdateForm from '@/components/ProfileUpdateForm'
-import PasswordUpdateForm from '@/components/PasswordUpdateForm'
 import Tiles from '@/components/Tiles'
 import UserAvatar from '@/components/UserAvatar'
 export default {
   name: 'Profil',
-  components: { UserAvatar, Tiles, PasswordUpdateForm, ProfileUpdateForm, TitleBar, CardComponent },
+  components: { UserAvatar, Tiles, TitleBar, CardComponent },
   computed: {
     titleStack () {
       return [

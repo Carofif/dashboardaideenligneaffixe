@@ -29,6 +29,8 @@
 <script>
 import CardComponent from '@/components/CardComponent'
 import firebase from 'firebase'
+import 'firebase/auth'
+
 export default {
   name: 'PasswordUpdateForm',
   components: {

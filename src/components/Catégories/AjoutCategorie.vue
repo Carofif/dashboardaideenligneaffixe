@@ -73,6 +73,7 @@ export default {
     },
     annuler () {
       this.$emit('cancel')
+      this.isComponentModalActive = false
     }
   },
   watch: {
