@@ -4,7 +4,7 @@
     <section class="section is-main-section">
       <div class="card">
         <header class="card-header">
-          <div class="level w-100">
+          <div class="level w-100 m-10">
             <div class="level-left">
               <div class="level-item">
                 <b-icon icon="shape-outline"></b-icon>

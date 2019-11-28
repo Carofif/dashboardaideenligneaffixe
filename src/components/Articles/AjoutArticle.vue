@@ -25,7 +25,7 @@
                         </b-field>
                   </section>
                   <footer class="modal-card-foot">
-                    <button class="button" type="button" @click="annuler">Fermer</button>
+                    <button class="button" type="button" @click="isComponentModalActive = false">Fermer</button>
                     <button class="button is-info" @click="addArticle">Valider</button>
                   </footer>
               </div>
@@ -78,6 +78,7 @@ export default {
           type: 'is-success',
           position: 'is-bottom'
         })
+        this.isComponentModalActive = false
       } else {
         this.$buefy.toast.open({
           message: 'Aucune donnée saisie',
