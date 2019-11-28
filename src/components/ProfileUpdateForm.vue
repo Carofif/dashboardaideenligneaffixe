@@ -1,54 +1,59 @@
 <template>
-  <card-component title="Editer le profil" icon="account-circle">
-    <section class="section is-main-section">
-      <figure class="media-left">
-        <p class="image is-64x64">
-          <img :src="form.photo.url" />
-        </p>
-      </figure>
-      <b-field class="file" horizontal label="Avatar">
-        <b-upload @input="imageAdd">
-          <a class="button is-info">
-            <b-icon icon="upload"></b-icon>
-            <span>Cliquer pour ajouter une photo</span>
-          </a>
-        </b-upload>
-      </b-field>
-      <hr />
-      <b-field horizontal label="Nom" message="Champs obligatoires. Votre nom">
-        <b-input v-model="form.name" name="name" required />
-      </b-field>
-      <b-field horizontal label="E-mail" message="Champs obligatoires. Votre e-mail">
-        <b-input v-model="form.email" name="email" type="email" required />
-      </b-field>
-      <hr />
-      <b-field horizontal>
-        <div class="control">
+  <div>
+    <a @click="isComponentModalActive = true">
+      <b-button class="is-info">Modifier Profil</b-button>
+    </a>
+    <b-modal :active.sync="isComponentModalActive" has-modal-card trap-focus>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Editer le profil</p>
+        </header>
+        <section class="modal-card-body">
+          <figure class="media-left">
+            <p class="image is-64x64">
+              <img :src="form.photo.url" />
+            </p>
+          </figure>
+          <b-field class="file" horizontal label="Avatar">
+            <b-upload @input="imageAdd">
+              <a class="button is-info">
+                <b-icon icon="upload"></b-icon>
+                <span>Cliquer pour ajouter une photo</span>
+              </a>
+            </b-upload>
+          </b-field>
+          <hr />
+          <b-field horizontal label="Nom" message="Champs obligatoires. Votre nom">
+            <b-input v-model="form.name" name="name" required />
+          </b-field>
+          <b-field horizontal label="E-mail" message="Champs obligatoires. Votre e-mail">
+            <b-input v-model="form.email" name="email" type="email" required />
+          </b-field>
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button" type="button" @click="annuler">Fermer</button>
           <b-button :loading="loadingSave" class="is-info ml" @click="submit">Soumettre</b-button>
-        </div>
-      </b-field>
-    </section>
-  </card-component>
+        </footer>
+      </div>
+    </b-modal>
+  </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import CardComponent from '@/components/CardComponent'
 import firebase from 'firebase'
 import 'firebase/auth'
 import { storage } from '@/plugins/firebase'
 
 export default {
   name: 'ProfileUpdateForm',
-  components: {
-    CardComponent
-  },
   data () {
     return {
       isFileUploaded: false,
       imageFile: null,
       loadingSave: false,
       isLoading: false,
+      isComponentModalActive: false,
       form: {
         name: null,
         email: null,
@@ -94,6 +99,7 @@ export default {
           }
         })
         this.loadingSave = false
+        this.isComponentModalActive = false
       } catch (error) {}
     },
     imageAdd (e) {
@@ -132,6 +138,10 @@ export default {
           }
         )
       })
+    },
+    annuler () {
+      this.$emit('cancel')
+      this.isComponentModalActive = false
     }
   },
   watch: {

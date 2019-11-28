@@ -77,10 +77,8 @@ export default {
       'updateArticles'
     ]),
     getCategorie () {
-      console.log('qlq3')
       db.ref('categories/').on('value', (snap) => {
         if (snap.val()) {
-          console.log('qlq4')
           this.updateCategories(Object.values(snap.val()))
         } else {
           this.updateCategories([])
@@ -88,10 +86,8 @@ export default {
       })
     },
     getArticle () {
-      console.log('qlq34')
       db.ref('articles').on('value', (snap) => {
         if (snap.val()) {
-          console.log('qlq45')
           this.updateArticles(Object.values(snap.val()))
           this.$compteur = 0
           this.$categories = {}
@@ -113,7 +109,6 @@ export default {
     }
   },
   mounted () {
-    console.log('qlq')
     this.getCategorie()
     this.getArticle()
   },

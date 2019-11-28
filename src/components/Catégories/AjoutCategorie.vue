@@ -18,7 +18,6 @@
                         {{image.name}}
                       </span>
                     </b-field>
-
                     <b-field label="Catégorie">
                       <b-input v-model="newCategorie"></b-input>
                     </b-field>
