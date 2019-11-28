@@ -62,6 +62,7 @@ export default {
           type: 'is-success',
           position: 'is-bottom'
         })
+        this.isComponentModalActive = false
       } else {
         this.$buefy.toast.open({
           message: 'Champ vide',
